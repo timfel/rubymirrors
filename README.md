@@ -1,4 +1,4 @@
-== A mirror API for Ruby
+## A mirror API for Ruby
 
 In [various][p1] [papers][p2] the advantages of having a mirror API to
 separate reflection from a language implementation have been
