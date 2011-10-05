@@ -1,6 +1,0 @@
-class RubyMirror
-  class Mirror
-    def self.reflect()
-    end
-  end
-end
