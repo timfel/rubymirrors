@@ -1,7 +1,3 @@
-require 'mspec'
-
-include Mirrors
-
 describe "MethodMirror" do
   describe "runtime reflection" do
     alias the it

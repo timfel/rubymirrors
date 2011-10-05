@@ -1,7 +1,3 @@
-require 'mspec'
-
-include Mirrors
-
 describe "Mirror" do
   before do
     @m = ClassMirror.reflect(TestClass)

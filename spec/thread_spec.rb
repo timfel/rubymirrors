@@ -1,7 +1,3 @@
-require 'mspec'
-
-include Mirrors
-
 describe "ThreadMirror" do
   def thread_op_a; 1; end
   def thread_op_b; 2; end

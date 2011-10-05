@@ -1,6 +1,5 @@
+require File.expand_path('../spec_helper', __FILE__)
 require 'fixtures/class_spec'
-
-include Mirrors
 
 describe "ClassMirror" do
   module TestMixin
@@ -30,7 +29,7 @@ describe "ClassMirror" do
   class TestBClass < TestClass; end
 
   before do
-    @m = ClassMirror.reflect(TestClass)
+    @m = Reflection.current.reflect_class(TestClass)
   end
 
   describe "queries" do
@@ -41,15 +40,15 @@ describe "ClassMirror" do
     end
 
     the "known instance variables" do
-      @m.instance_variables.should.include("@a", "@b")
+      @m.instance_variables.should include("@a", "@b")
     end
 
     the "known class variables" do
-      @m.class_variables.should.include("@@cva", "@@cvb", "@@cvc")
+      @m.class_variables.should include("@@cva", "@@cvb", "@@cvc")
     end
 
     the "known class instance variables" do
-      @m.class_instance_variables.should.include("@civa", "@civb")
+      @m.class_instance_variables.should include("@civa", "@civb")
     end
 
     the "known constants" do
@@ -58,21 +57,20 @@ describe "ClassMirror" do
     end
 
     the "known inner classes" do
-      @m.nested_classes.first.should.be_kind_of(ClassMirror)
+      @m.nested_classes.first.should.be_kind_of(@m.class)
       @m.nested_classes.first.name.should == TestClassInner.name
     end
 
     the "known direct methods" do
-      @m.methods.each {|a| a.should.be_kind_of(MethodMirror) }
       @m.methods.size.should == 2
     end
 
     the "ancestors" do
-      @m.ancestors.each {|a| a.should.be_kind_of(ClassMirror) }
+      @m.ancestors.each {|a| a.should.be_kind_of(@m.class) }
     end
 
     the "superclass" do
-      @m.superclass.should.be_kind_of(ClassMirror)
+      @m.superclass.should.be_kind_of(@m.class)
     end
 
     the "known subclasses" do
@@ -84,7 +82,7 @@ describe "ClassMirror" do
     end
 
     the "nesting" do
-      @m.nesting.last.should.be_kind_of(ClassMirror)
+      @m.nesting.last.should.be_kind_of(@m.class)
       @m.nesting.last.name.should == TestClass.name
     end
 

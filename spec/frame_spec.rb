@@ -1,6 +1,5 @@
-require 'mspec'
 
-include Mirrors
+
 
 describe "StackFrameMirror" do
   class A
