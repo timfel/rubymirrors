@@ -1,6 +1,5 @@
 require File.expand_path('../spec_helper', __FILE__)
 require 'fixtures/reflect_spec'
-require 'uri'
 
 describe Reflection do
   it "returns the type of codebase it can work on" do
@@ -9,13 +8,7 @@ describe Reflection do
 
   describe "queries" do
     before do
-      map = { File => proc { Reflection.reflect("fixtures/reflect") },
-        NilClass => proc { Reflection.reflect(nil) },
-        URI => proc do
-          run_drb_vm
-          Reflection.reflect(URI::Generic.new("drb", "127.0.0.1", "9128"))
-        end }
-      @r = map[Reflection.codebase][]
+      @r = reflection
     end
 
     it "finds known modules" do

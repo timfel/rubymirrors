@@ -1,4 +1,4 @@
-describe "Mirror" do
+describe AbstractReflection::Mirror do
   before do
     @m = ClassMirror.reflect(TestClass)
   end

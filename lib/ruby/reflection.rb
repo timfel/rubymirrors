@@ -1,8 +1,13 @@
-require 'reflection'
+require 'abstract_reflection'
 require 'ruby/reflection/mirror'
+require 'ruby/reflection/object_mirror'
+require 'ruby/reflection/field_mirror'
+require 'ruby/reflection/thread_mirror'
 
 module Ruby
-  class Reflection < ::Reflection
+  class Reflection
+    include AbstractReflection
+
     def self.codebase
       nil.class
     end
@@ -33,4 +38,3 @@ module Ruby
     end
   end
 end
-

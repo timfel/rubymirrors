@@ -1,4 +1,7 @@
 module Ruby
-  class Mirror < ::Reflection::Mirror
+  class Reflection
+    class Mirror
+      include AbstractReflection::Mirror
+    end
   end
 end

@@ -1,12 +1,9 @@
+require File.expand_path('../spec_helper', __FILE__)
+require 'fixtures/method_spec'
+
 describe "MethodMirror" do
   describe "runtime reflection" do
-    alias the it
-
     describe "structural queries" do
-      def method_a
-        [__FILE__, __LINE__, __method__, self.class]
-      end
-
       before do
         @m = MethodMirror.reflect(method(:method_a))
       end
