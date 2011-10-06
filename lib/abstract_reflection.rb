@@ -50,9 +50,31 @@ module AbstractReflection
     raise CapabilitiesExceeded
   end
 
+  # Ask the system to find the object with the given object id
+  # @param [Numeric] object id
+  # @return [ObjectMirror, NilClass] the object mirror or nil
+  def object_by_id(id)
+    raise CapabilitiesExceeded
+  end
+
   # Return the currently active threads in the system
   # @return [Array<ThreadMirror>] a list of thread mirrors
   def threads
+    raise CapabilitiesExceeded
+  end
+
+  # @return [String] the platform the system is running on. usually RUBY_PLATFORM
+  def platform
+    raise CapabilitiesExceeded
+  end
+
+  # @return [String] the used implementation of Ruby
+  def engine
+    raise CapabilitiesExceeded
+  end
+
+  # @return [String] the version string describing the system
+  def version
     raise CapabilitiesExceeded
   end
 

@@ -15,5 +15,17 @@ module AbstractReflection
     def target_class
       raise CapabilitiesExceeded
     end
+
+    def objects_with_references
+    end
+
+    def transitive_closure
+    end
+
+    def path_to(obj)
+    end
+
+    def instance_eval
+    end
   end
 end

@@ -33,9 +33,26 @@ describe Reflection do
       instances.should_not include(b.inspect)
     end
 
+    it "can get vm objects id" do
+      o = Object.new
+      @r.object_by_id(o.object_id).name.should == o.inspect
+    end
+
     it "returns all available threads" do
       t = Thread.start {}
       @r.threads.collect(&:name).should include(t.inspect)
+    end
+
+    it "reports a platform" do
+      @r.platform.should == RUBY_PLATFORM
+    end
+
+    it "reports a ruby implementation" do
+      @r.engine.should == RUBY_ENGINE
+    end
+
+    it "reports the implementation's version" do
+      @r.version.should == Object.const_get(:"#{RUBY_ENGINE.upcase}_VERSION")
     end
   end
 end

@@ -4,16 +4,12 @@ module Ruby
       include AbstractReflection::ClassMirror
       reflect! Module
 
-      def instance_variables
-        []
-      end
-
       def class_variables
-        @subject.class_variables
+        field_mirrors @subject.class_variables
       end
 
       def class_instance_variables
-        singleton_class.instance_variables
+        field_mirrors @subject.instance_variables
       end
 
       def source_files
@@ -24,31 +20,28 @@ module Ruby
       end
 
       def singleton_class
-        Reflection.reflect_class(@subject.singleton_class)
-      end
-
-      def nesting
-        @subject.class_eval { Module.nesting }
+        Mirror.reflect_object @subject.singleton_class
       end
 
       def mixins
-        @subject.ancestors.reject {|m| m.is_a? Class }
+        mirrors @subject.ancestors.reject {|m| m.is_a? Class }
       end
 
       def superclass
-        @subject.superclass
+        Mirror.reflect @subject.superclass
       end
 
       def subclasses
-        ObjectSpace.each_object(Class).select {|a| a.superclass == Object }
+        l = ObjectSpace.each_object(Class).select {|a| a.superclass == @subject }
+        mirrors l
       end
 
       def ancestors
-        @subject.ancestors.collect {|m| Reflection.reflect_class(m) }
+        mirrors @subject.ancestors
       end
 
       def constants
-        @subject.constants.collect {|c| Mirror.reflect c }
+        field_mirrors @subject.constants
       end
     end
   end

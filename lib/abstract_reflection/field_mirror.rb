@@ -21,5 +21,9 @@ module AbstractReflection
     def protected?
       raise CapabilitiesExceeded
     end
+
+    def writable?
+      true
+    end
   end
 end

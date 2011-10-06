@@ -1,5 +1,7 @@
 module AbstractReflection
   module ClassMirror
+    include ObjectMirror
+
     def instance_variables
       raise CapabilitiesExceeded
     end
@@ -20,7 +22,20 @@ module AbstractReflection
       raise CapabilitiesExceeded
     end
 
+    def singleton_class?
+    end
+
+    def singleton_instance
+    end
+
+    def namespace
+    end
+    
     def nesting
+      raise CapabilitiesExceeded
+    end
+
+    def nested_classes
       raise CapabilitiesExceeded
     end
 
@@ -41,6 +56,14 @@ module AbstractReflection
     end
 
     def constants
+      raise CapabilitiesExceeded
+    end
+
+    def methods
+      raise CapabilitiesExceeded
+    end
+
+    def method_dictionary
       raise CapabilitiesExceeded
     end
   end
