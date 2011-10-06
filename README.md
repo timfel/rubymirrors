@@ -8,7 +8,7 @@ specs and classes that document a mirror API for Ruby. The mirror
 implementation that is part of this project will use only those
 language facilities that are available across Ruby implementations,
 the specs, however, will also test behavior that cannot be provided in
-such a manner. The idea here is, the in time all implementations
+such a manner. The idea here is that in time, all implementations
 provide their own implementation of the mirror API, and all
 implementations collaborate on this one spec.
 
@@ -17,8 +17,8 @@ to be written in Ruby. If they are not, that excludes many people from
 tinkering with their tools, thus impeding innovation. You only have to
 look at Emacs or Smalltalk to see what's possible when Programmers can
 extend their tools, all tools, in a language they feel comfortable
-in. If we have a standard mirror API, all tools that are written for
-Ruby can be shared across implementations, while at the same time
+in. If we have a standard mirror API, all tools that are written **for**
+Ruby, **in** Ruby, can be shared across implementations, while at the same time
 allowing language implementers to use the facilities of their platform
 to provide optimal reflective capabilities without tying them to
 internals.
