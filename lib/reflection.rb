@@ -43,4 +43,12 @@ class Reflection
   def instances_of(klass)
     raise CapabilitiesExceeded
   end
+
+  # Return the currently active threads in the system
+  # @return [Array<ThreadMirror>] a list of thread mirrors
+  def threads
+    raise CapabilitiesExceeded
+  end
 end
+
+require 'reflection/mirror'
