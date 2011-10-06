@@ -1,10 +1,10 @@
 module AbstractReflection
-  # The basic mirror class. It is the most generic mirror and can
-  # reflect on any object. It is also the factory to use for creating
-  # new mirrors on any kind of object. Its #reflect class method will
-  # return an appropriate mirror for a given object, provided one has
-  # been registered. The [Mirror] class itself is registered as the
-  # fallback case for any kind of object.
+  # The basic mirror. This is the lib code. It is also the factory to
+  # use for creating new mirrors on any kind of object. Its #reflect
+  # class method will return an appropriate mirror for a given object,
+  # provided one has been registered. The [ObjectMirror] class should
+  # have been registered as the fallback case for any kind of object,
+  # but that may depend on the specific API implementation.
   module Mirror
     module ClassMethods
       @@mirrors = []
