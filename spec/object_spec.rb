@@ -1,7 +1,7 @@
 require File.expand_path('../spec_helper', __FILE__)
 require 'fixtures/object_spec'
 
-describe "Mirror" do
+describe "ObjectMirror" do
   before do
     @r = reflection
   end

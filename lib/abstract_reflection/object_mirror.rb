@@ -7,6 +7,13 @@ module AbstractReflection
     def variables
       raise CapabilitiesExceeded
     end
+
+    def class_variables
+      raise CapabilitiesExceeded
+    end
+
+    def target_class
+      raise CapabilitiesExceeded
+    end
   end
 end
-

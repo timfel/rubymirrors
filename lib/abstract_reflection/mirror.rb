@@ -18,8 +18,10 @@ module AbstractReflection
       #   representation.  It is really up to the mirror to decide what to
       #   do with it
       def reflect(obj)
-        target_mirror = @@mirrors.detect {|klass| klass.reflects?(obj) }
-        target_mirror.mirror_class.new(obj)
+        target_mirror = nil
+        @@mirrors.detect {|klass| target_mirror = klass.mirror_class(obj) }
+        raise CapabilitiesExceeded if target_mirror.nil?
+        target_mirror.new(obj)
       end
 
       # Decides whether the given class can reflect on [obj]
@@ -49,9 +51,12 @@ module AbstractReflection
         self
       end
 
-      # @return [Mirror] the actual class to instantiate as mirror, using #new
-      def mirror_class
-        self
+      # @param [Object] the object to reflect upon
+      #
+      # @return [Mirror, NilClass] the class to instantiate as mirror,
+      #   using #new, or nil, if non is known
+      def mirror_class(obj)
+        self if reflects?(obj)
       end
 
       # Only define this once, and always get the ClassMethods from
