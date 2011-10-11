@@ -48,6 +48,7 @@ module AbstractReflection
       # @return [Mirror] returns self
       def register_mirror(klass)
         @@mirrors.unshift klass
+        @@mirrors.uniq!
         self
       end
 
