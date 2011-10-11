@@ -37,7 +37,11 @@ module Ruby
       end
 
       def instance_variables
-        field_mirrors @subject.__inst_var_names
+        if (fixed_ivs = @subject.__inst_var_names).empty?
+          raise AbstractReflection::CapabilitiesExceeded
+        else
+          field_mirrors fixed_ivs
+        end
       end
 
       def class_variables
@@ -49,7 +53,8 @@ module Ruby
       end
 
       def nested_classes
-        constants.select {|c| c === self.class }
+        cls = constants.collect(&:value).select {|c| c.kind_of? Module }
+        mirrors cls
       end
 
       def source_files
@@ -75,19 +80,44 @@ module Ruby
       end
 
       def subclasses
-        each_module.to_a.select {|m| m.superclass && m.superclass.mirrors?(@subject) }
+        ary = []
+        each_module do |m|
+          ary << m if m.superclass && m.superclass.mirrors?(@subject)
+        end
+        ary
       end
 
       def ancestors
         mirrors @subject.ancestors
       end
 
+      def constant(str)
+        path = str.to_s.split("::")
+        c = path[0..-2].inject(@subject) {|klass,str| klass.const_get(str) }
+        field_mirror c, path.last
+      rescue NameError
+        nil
+      end
+
       def constants
         field_mirrors (@subject.constants - @subject.instance_variables)
       end
 
+      def method(name)
+        Mirror.reflect @subject.instance_method(name.to_s)
+      end
+
       def methods
-        @subject.methods(false)
+        @subject.instance_methods(false)
+      end
+
+      def nesting
+        ary = [@subject]
+        while nxt = ary.last.__transient_namespace(1).parent.my_class
+          break if nxt == Object
+          ary << nxt
+        end
+        ary
       end
 
       private
@@ -129,7 +159,7 @@ module Ruby
           return ts.parent
         end
       end
-      
+
       # Return an object named in the Ruby namespace.
       #
       # @param [String] name The name of the object. E.g., "Object",
@@ -146,8 +176,12 @@ module Ruby
 
       def field_mirrors(list, subject = @subject)
         list.collect do |name|
-          Mirror.reflect Maglev::Reflection::FieldMirror::Field.new(subject, name)
+          field_mirror(subject, name)
         end
+      end
+
+      def field_mirror(subject, name)
+        Mirror.reflect Maglev::Reflection::FieldMirror::Field.new(subject, name)
       end
     end
   end

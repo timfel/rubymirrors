@@ -24,7 +24,7 @@ module Maglev
       def line=(num)
         raise CapabilitiesExceeded unless regular_method?
         reload_after do
-          defining_class.class_eval(source, file, num - 1)
+          defining_class.class_eval(source, file, num)
         end
       end
 
