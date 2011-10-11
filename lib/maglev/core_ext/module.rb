@@ -11,7 +11,7 @@ class Module
   primitive 'singleton_class?', 'isRubySingletonClass'
   primitive '__the_non_meta_class', 'theNonMetaClass'
   primitive '__inst_var_names', 'instVarNames'
-  primitive '__inst_var_at', 'instVarAt:'
-  primitive '__inst_var_at_put', 'instVarAt:Put:'
   primitive '__compile_method_category_environment_id', 'compileMethod:category:environmentId:'
+  primitive '__compile_method_category_environment_id', 'compileMethod:category:environmentId:'
+  primitive '__subclasses', 'subclasses'
 end

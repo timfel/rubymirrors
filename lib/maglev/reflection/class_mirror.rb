@@ -6,13 +6,6 @@ module Ruby
       include AbstractReflection::ClassMirror
       reflect! Module
 
-      # The namespace (lexical scope) in which the Module was defined
-      def namespace
-        if ts = __transient_namespace(1)
-          return ts.parent
-        end
-      end
-
       def singleton_instance
         raise TypeError, "not a singleton class" unless self.singleton_class?
         if self.inspect =~ /^#<Class:.*>$/
@@ -43,6 +36,61 @@ module Ruby
         method(new_method_selector) if new_method_selector
       end
 
+      def instance_variables
+        field_mirrors @subject.__inst_var_names
+      end
+
+      def class_variables
+        field_mirrors @subject.class_variables
+      end
+
+      def class_instance_variables
+        field_mirrors @subject.instance_variables
+      end
+
+      def nested_classes
+        constants.select {|c| c === self.class }
+      end
+
+      def source_files
+        method_objects = @subject.instance_methods(false).collect do |name|
+          @subject.instance_method(name)
+        end
+        method_objects += @subject.methods(false).collect do |name|
+          @subject.method(name)
+        end
+        method_objects.collect(&:source_location).collect(&:first).uniq
+      end
+
+      def singleton_class
+        Mirror.reflect_object @subject.singleton_class
+      end
+
+      def mixins
+        mirrors @subject.ancestors.reject {|m| m.is_a? Class }
+      end
+
+      def superclass
+        self.class.new @subject.superclass
+      end
+
+      def subclasses
+        each_module.to_a.select {|m| m.superclass && m.superclass.mirrors?(@subject) }
+      end
+
+      def ancestors
+        mirrors @subject.ancestors
+      end
+
+      def constants
+        field_mirrors (@subject.constants - @subject.instance_variables)
+      end
+
+      def methods
+        @subject.methods(false)
+      end
+
+      private
       # Traverse the Ruby namespace hierarchy and execute block for all classes
       # and modules.  Returns an IdentitySet of all classes and modules found.
       # Skips autoloads (i.e., does not trigger them and does not yield them to
@@ -57,15 +105,15 @@ module Ruby
       # @return [IdentitySet] An IdentitySet of all the Classes and Modules
       #         registered in the Ruby namespace
       #
-      def each_module(rg=IdentitySet.new, &block)
-        unless rg.include?(self)
-          rg.add self
-          yield(self) if block
-          self.constants.each do |c|
-            unless self.autoload?(c)
+      def each_module(from=Object, rg=IdentitySet.new, &block)
+        unless rg.include?(from)
+          rg.add from
+          yield(self.class.new(from)) if block
+          from.constants.each do |c|
+            unless from.autoload?(c)
               begin
-                obj = self.const_get(c)
-                obj.each_module(rg, &block) if Module === obj
+                obj = from.const_get(c)
+                each_module(obj, rg, &block) if Module === obj
               rescue Exception
                 next
               end
@@ -75,6 +123,13 @@ module Ruby
         rg
       end
 
+      # The namespace (lexical scope) in which the Module was defined
+      def namespace
+        if ts = __transient_namespace(1)
+          return ts.parent
+        end
+      end
+      
       # Return an object named in the Ruby namespace.
       #
       # @param [String] name The name of the object. E.g., "Object",
@@ -89,49 +144,10 @@ module Ruby
         end
       end
 
-      def instance_variables
-        @subject.__inst_var_names do ||
+      def field_mirrors(list, subject = @subject)
+        list.collect do |name|
+          Mirror.reflect Maglev::Reflection::FieldMirror::Field.new(subject, name)
         end
-      end
-      
-      def class_variables
-        field_mirrors @subject.class_variables
-      end
-
-      def class_instance_variables
-        field_mirrors @subject.instance_variables
-      end
-
-      def source_files
-        method_objects = @subject.instance_methods.collect do |name|
-          @subject.instance_method(name)
-        end
-        method_objects.collect(&:source_location).collect(&:first).uniq
-      end
-
-      def singleton_class
-        Mirror.reflect_object @subject.singleton_class
-      end
-
-      def mixins
-        mirrors @subject.ancestors.reject {|m| m.is_a? Class }
-      end
-
-      def superclass
-        Mirror.reflect @subject.superclass
-      end
-
-      def subclasses
-        l = ObjectSpace.each_object(Class).select {|a| a.superclass == @subject }
-        mirrors l
-      end
-
-      def ancestors
-        mirrors @subject.ancestors
-      end
-
-      def constants
-        field_mirrors @subject.constants
       end
     end
   end

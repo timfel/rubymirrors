@@ -1,6 +1,6 @@
 module Maglev
   class Reflection
-    class Mirror < Ruby::Mirror
+    class Mirror < Ruby::Reflection::Mirror
     end
   end
 end

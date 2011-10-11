@@ -1,3 +1,8 @@
+require 'ruby/reflection/field_mirror/class_variable_mirror'
+require 'ruby/reflection/field_mirror/instance_variable_mirror'
+require 'ruby/reflection/field_mirror/constant_mirror'
+require 'maglev/reflection/field_mirror/fixed_instance_variable_mirror'
+
 module Maglev
   class Reflection
     class FieldMirror < Mirror
@@ -9,13 +14,13 @@ module Maglev
         if reflects?(field)
           case
           when field.name.start_with?("@@")
-            ClassVariableMirror
+            Ruby::Reflection::ClassVariableMirror
           when field.name.start_with?("@")
-            DynamicInstanceVariableMirror
-          when field === Symbol
+            Ruby::Reflection::InstanceVariableMirror
+          when field.name === Symbol
             FixedInstanceVariableMirror
           else
-            ConstantMirror
+            Ruby::Reflection::ConstantMirror
           end
         end
       end
@@ -32,7 +37,3 @@ module Maglev
     end
   end
 end
-
-require 'ruby/reflection/field_mirror/class_variable_mirror'
-require 'ruby/reflection/field_mirror/instance_variable_mirror'
-require 'ruby/reflection/field_mirror/constant_mirror'

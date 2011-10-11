@@ -42,15 +42,15 @@ module Ruby
     end
 
     def platform
-      RUBY_PLATFORM
+      Object::RUBY_PLATFORM
     end
 
     def engine
-      RUBY_ENGINE
+      Object::RUBY_ENGINE
     end
 
     def version
-      Object.const_get("#{RUBY_ENGINE.upcase}_VERSION")
+      Object.const_get("#{engine.upcase}_VERSION")
     end
 
     private
