@@ -1,4 +1,4 @@
-require 'maglev/core_ext/module'
+require 'maglev/reflection/core_ext/module'
 
 module Ruby
   class Reflection
