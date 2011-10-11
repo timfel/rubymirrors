@@ -216,5 +216,29 @@ module AbstractReflection
     def ast
       raise CapabilitiesExceeded
     end
+
+    def public?
+      raise CapabilitiesExceeded
+    end
+
+    def public!
+      raise CapabilitiesExceeded
+    end
+
+    def private?
+      raise CapabilitiesExceeded
+    end
+
+    def private!
+      raise CapabilitiesExceeded
+    end
+
+    def protected?
+      raise CapabilitiesExceeded
+    end
+
+    def protected!
+      raise CapabilitiesExceeded
+    end
   end
 end
