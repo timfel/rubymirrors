@@ -1,6 +1,6 @@
 require 'maglev/reflection/core_ext/module'
 
-module Ruby
+module Maglev
   class Reflection
     class ClassMirror < ObjectMirror
       include AbstractReflection::ClassMirror
@@ -172,16 +172,6 @@ module Ruby
         name.split('::').inject(self) do |parent, name|
           obj = parent.const_get name
         end
-      end
-
-      def field_mirrors(list, subject = @subject)
-        list.collect do |name|
-          field_mirror(subject, name)
-        end
-      end
-
-      def field_mirror(subject, name)
-        Mirror.reflect Maglev::Reflection::FieldMirror::Field.new(subject, name)
       end
     end
   end
