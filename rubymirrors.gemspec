@@ -1,9 +1,6 @@
-$:.push File.expand_path("../lib", __FILE__)
-require 'ruby_mirrors'
-
 Gem::Specification.new do |s|
   s.name          = "rubymirrors"
-  s.version       = RubyMirrors::VERSION
+  s.version       = "0.0.1"
   s.platform      = Gem::Platform::RUBY
   s.authors       = ["Tim Felgentreff"]
   s.email         = ["timfelgentreff@gmail.com"]
