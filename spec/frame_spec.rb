@@ -1,17 +1,7 @@
-
-
+require File.expand_path('../spec_helper', __FILE__)
+require 'fixtures/stack_frame_spec'
 
 describe "StackFrameMirror" do
-  class A
-    def thread_op_a(a = 1)
-      local = 1
-      Thread.stop
-    end
-
-    def thread_op_b; 2; end
-    def thread_op_c; raise "stop"; end
-  end
-
   before(:each) do
     @t = Thread.start { A.new.thread_op_a }
     @m = ThreadMirror.reflect(@t)

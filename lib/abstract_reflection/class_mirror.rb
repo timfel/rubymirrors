@@ -14,15 +14,15 @@ module AbstractReflection
       raise CapabilitiesExceeded
     end
 
-    # The known class variables. @see #instance_variables
-    #
+    # The known class variables.
+    # @see #instance_variables
     # @return [FieldMirror]
     def class_variables
       raise CapabilitiesExceeded
     end
 
-    # The known class variables. @see #instance_variables
-    #
+    # The known class variables.
+    # @see #instance_variables
     # @return [FieldMirror]
     def class_instance_variables
       raise CapabilitiesExceeded
@@ -46,12 +46,14 @@ module AbstractReflection
     #
     # @return [true,false]
     def singleton_class?
+      raise CapabilitiesExceeded
     end
 
     # The inverse of #singleton_class.
     #
     # @return [ClassMirror]
     def singleton_instance
+      raise CapabilitiesExceeded
     end
 
     # The namespace of this class. Provides direct access to the
@@ -59,6 +61,7 @@ module AbstractReflection
     #
     # @return [ClassMirror]
     def namespace
+      raise CapabilitiesExceeded
     end
 
     # The full nesting.
@@ -111,11 +114,27 @@ module AbstractReflection
       raise CapabilitiesExceeded
     end
 
+    # Searches for the named constant in the mirrored namespace. May
+    # include a colon (::) separated constant path.
+    #
+    # @return [ClassMirror, nil] the requested constant, or nil
+    def constant(name)
+      raise CapabilitiesExceeded
+    end
+
     # The instance methods of this class. To get to the class methods,
     # ask the #singleton_class for its methods.
     #
     # @return [Array<MethodMirror>]
     def methods
+      raise CapabilitiesExceeded
+    end
+
+    # The instance method of this class or any of its superclasses
+    # that has the specified selector
+    #
+    # @return [MethodMirror, nil] the method or nil, if none was found
+    def method(name)
       raise CapabilitiesExceeded
     end
 

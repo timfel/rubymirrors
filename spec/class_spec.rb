@@ -33,12 +33,25 @@ describe "ClassMirror" do
       names.should include "Foo"
     end
 
+    it "can return a mirror on a particular constant" do
+      @m.constant("Foo").name.should == "Foo"
+    end
+
+    it "can find a nested constant" do
+      @m.constant("ClassFixtureNested::ClassFixtureNestedNested").name.should == ClassFixtureNestedNested.name
+    end
+
     it "known inner classes" do
       @m.nested_classes.first.name.should == ClassFixtureNested.name
     end
 
-    it "known direct methods" do
-      @m.methods.size.should == 2
+    it "known instance methods" do
+      @m.methods.size.should == ClassFixture.instance_methods(false).size
+    end
+
+    it "can return one particular method" do
+      n = ClassFixture.instance_methods.first
+      @m.method(n).mirrors?(ClassFixture.instance_method(n)).should == true
     end
 
     it "ancestors" do

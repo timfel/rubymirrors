@@ -80,5 +80,15 @@ module AbstractReflection
     def name
       @subject.inspect
     end
+
+    # The equivalent to #==/#eql? for comparison of mirrors against objects
+    def mirrors?(other)
+      @subject == other
+    end
+
+    # Accessor to the reflected object
+    def reflectee
+      @subject
+    end
   end
 end

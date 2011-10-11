@@ -12,6 +12,7 @@ module AbstractReflection
     #
     # return [MethodMirror]
     def compile(source)
+      raise CapabilitiesExceeded
     end
 
     # For a specific compiler state, this holds the current module
@@ -22,6 +23,7 @@ module AbstractReflection
     #
     # return [Array<ClassMirror>]
     def module_scope
+      raise CapabilitiesExceeded
     end
   end
 end

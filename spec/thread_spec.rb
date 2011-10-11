@@ -1,11 +1,19 @@
-describe "ThreadMirror" do
-  def thread_op_a; 1; end
-  def thread_op_b; 2; end
-  def thread_op_c; raise "stop"; end
+require File.expand_path('../spec_helper', __FILE__)
+require 'fixtures/thread_spec'
 
+describe "ThreadMirror" do
   before(:each) do
-    @t = Thread.start { thread_op_a; Thread.stop; thread_op_a }
-    @m = ThreadMirror.reflect(@t)
+    @r = reflection
+    @t = Thread.start do
+      t = ThreadFixture.new
+      t.stop
+      t.return
+    end
+    @m = reflection.reflect_object(@t)
+  end
+
+  after(:each) do
+    @t.kill
   end
 
   describe "should query" do
@@ -15,11 +23,11 @@ describe "ThreadMirror" do
 
     it "the thread return value" do
       @m.run
-      @m.return_value.should == thread_op_a
+      @m.return_value.should == ThreadFixture.new.return
     end
 
     it "the stack" do
-      @m.stack.should.be_kind_of(Array)
+      @m.stack.collect(&:name).should include "stop"
     end
   end
 

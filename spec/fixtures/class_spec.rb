@@ -4,7 +4,10 @@ end
 class ClassFixture
   Foo = "Bar"
 
-  class ClassFixtureNested; end
+  class ClassFixtureNested
+    class ClassFixtureNestedNested
+    end
+  end
   include ClassFixtureModule
 
   attr_accessor :b
