@@ -90,6 +90,8 @@ module AbstractReflection
     end
 
     # The offsets into the source code for method sends.
+    #
+    # @return [Hash<String, Fixnum>] a hash of selector-offset pairs
     def send_offsets
       raise CapabilitiesExceeded
     end
@@ -182,6 +184,15 @@ module AbstractReflection
     #
     # @return [Time]
     def execution_time_average
+      raise CapabilitiesExceeded
+    end
+
+    # The number of times this method has been called. Not
+    # neccessarily an exact number (to allow for optimizations), but
+    # should at least give an indication.
+    #
+    # @return [Fixnum]
+    def invocation_count
       raise CapabilitiesExceeded
     end
 

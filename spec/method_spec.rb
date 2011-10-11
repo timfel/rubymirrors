@@ -4,25 +4,50 @@ require 'fixtures/method_spec'
 describe "MethodMirror" do
   describe "runtime reflection" do
     describe "structural queries" do
-      before do
+      before(:each) do
         @r = Reflection.new(nil)
-        @m = Reflection.reflect_object(method(:method_a))
+        @f = MethodSpecFixture
+        m = MethodSpecFixture.instance_method(:source_location)
+        @m = @r.reflect_object(m)
       end
 
-      it "filename" do
-        @m.file.should == method_a[0]
+      it "file" do
+        @m.file.should == @f.new.source_location[0]
       end
 
       it "line" do
-        @m.line.should == (method_a[1] - 1)
+        @m.line.should == (@f.new.source_location[1] - 1)
       end
 
       it "selector" do
-        @m.selector.should == method[2]
+        @m.selector.should == @f.new.source_location[2]
       end
 
       it "defining class" do
-        @m.defining_class.should == method[3]
+        @m.defining_class.should == @f.new.source_location[3]
+      end
+
+      it "source" do
+        @m.source.should =~ /[__FILE__, __LINE__, __method__.to_s, self.class]/
+      end
+
+      it "line=" do
+        @m.line = 12
+        @m.line.should == 12
+        MethodSpecFixture.new.source_location
+      end
+
+      it "file=" do
+        @m.file = "no_file.rb"
+        @m.file.should == "no_file.rb"
+      end
+      
+      it "source=" do
+        @m.source = @m.source.sub("__FILE__", "__FILE__.to_s")
+        @m.source.should =~ /[__FILE__.to_s, __LINE__, __method__.to_s, self.class]/
+        @m.defining_class.should == MethodSpecFixture
+        m = @r.reflect_object MethodSpecFixture.instance_method(:source_location)
+        m.source.should =~ /[__FILE__.to_s, __LINE__, __method__.to_s, self.class]/
       end
     end
 
@@ -38,7 +63,7 @@ describe "MethodMirror" do
 
       describe "arguments" do
         it "argument list" do
-          @m.arguments.should.include("a", "aa", "b", "bb", "args", "block")
+          @m.arguments.should include("a", "aa", "b", "bb", "args", "block")
         end
 
         it "block argument" do
@@ -46,12 +71,11 @@ describe "MethodMirror" do
         end
 
         it "required arguments" do
-          @m.required_arguments.should.include("a", "aa")
+          @m.required_arguments.should include("a", "aa")
         end
 
         it "optional arguments" do
-          @m.optional_arguments.keys.should.include("b", "bb")
-          @m.optional_arguments.values.should.include(1, 2)
+          @m.optional_arguments.should include("b", "bb")
         end
 
         it "splat argument" do
@@ -60,16 +84,16 @@ describe "MethodMirror" do
       end
 
       it "step_locations" do
-        @m.step_locations.each do |l|
-          l.should.be_kind_of(Fixnum)
+        @m.step_offsets.each do |l|
+          l.should be_kind_of(Fixnum)
           l.should < @m.source.length
         end
       end
 
       it "message sends and their offsets" do
-        @m.message_sends.should.be_kind_of(Hash)
-        @m.message_sends.keys.first.should == ["to_s"]
-        @m.message_sends.values.first.should.be_kind_of(Fixnum)
+        @m.send_offsets.should be_kind_of(Hash)
+        @m.send_offsets.keys.should include "to_s"
+        @m.send_offsets.values.first.should be_kind_of(Fixnum)
       end
 
       it "ast" do
@@ -108,7 +132,7 @@ describe "MethodMirror" do
       end
 
       it "returns native code if it was JITted" do
-        @m.native_code
+        pending
       end
 
       it "returns average execution time" do
@@ -125,12 +149,18 @@ describe "MethodMirror" do
         @m.execution_time_share.should > 0
       end
 
+      it "returns invocation count" do
+        ic = @m.invocation_count
+        MethodSpecFixture.new.send(@m.selector)
+        @m.invocation_count.should == (ic + 1)
+      end
+
       it "can delete a method from its home class" do
-        c = @r.reflect_object(MethodSpecFixture)
-        m = c.method("removeable_method")
-        c.instance_methods.should include(:removeable_method)
-        m.remove
-        c.instance_methods.should_not include(:removeable_method)
+        c = MethodSpecFixture
+        m = @r.reflect_object c.instance_method(:removeable_method)
+        c.instance_methods.should include("removeable_method")
+        m.delete
+        c.instance_methods.should_not include("removeable_method")
       end
     end
   end
