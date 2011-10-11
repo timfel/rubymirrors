@@ -1,12 +1,10 @@
-RubyNameSpace = __resolve_smalltalk_global(:RubyNameSpace)
-class RubyNameSpace
-  primitive 'parent', 'parent'
-  primitive 'my_class', 'myClass'
-  primitive 'keys', 'keys'
-  primitive '[]', 'at:'
-end
-
 class Module
+  RubyNameSpace = __resolve_smalltalk_global(:RubyNameSpace)
+  RubyNameSpace.primitive 'parent', 'parent'
+  RubyNameSpace.primitive 'my_class', 'myClass'
+  RubyNameSpace.primitive 'keys', 'keys'
+  RubyNameSpace.primitive '[]', 'at:'
+
   primitive '__transient_namespace', 'transientNameSpace:'
   primitive 'singleton_class?', 'isRubySingletonClass'
   primitive '__the_non_meta_class', 'theNonMetaClass'
