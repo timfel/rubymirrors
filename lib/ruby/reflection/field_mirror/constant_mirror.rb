@@ -20,6 +20,10 @@ module Ruby
       def private?
         false
       end
+
+      def delete
+        @object.remove_const(@name)
+      end
     end
   end
 end

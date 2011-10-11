@@ -102,16 +102,17 @@ describe "FieldMirror" do
       @m.public?.should be_true
     end
 
-    it "can remove a constant" do
-      @m.remove
+    it "can delete a constant" do
+      @m.delete
       @om.constants.should_not include @m
 
-      @m = @om.constants.add @name
-      @m.value = @name
+      @m = @om.reflectee.const_set(@m.name, @name)
     end
 
     it "can add a constant" do
-      @om.constants << "MyNewlyAddedConstant"
+      cst = @om.constant("MyNewlyAddedConstant")
+      @om.constants.collect(&:name).should_not include("MyNewlyAddedConstant")
+      cst.value = "MyNewlyAddedConstant"
       @om.constants.collect(&:name).should include("MyNewlyAddedConstant")
     end
   end

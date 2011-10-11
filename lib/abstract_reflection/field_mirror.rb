@@ -25,5 +25,9 @@ module AbstractReflection
     def writable?
       true
     end
+
+    def delete
+      raise CapabilitiesExceeded
+    end
   end
 end
