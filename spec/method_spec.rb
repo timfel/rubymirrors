@@ -34,7 +34,6 @@ describe "MethodMirror" do
       it "line=" do
         @m.line = 12
         @m.line.should == 12
-        MethodSpecFixture.new.source_location
       end
 
       it "file=" do

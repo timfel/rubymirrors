@@ -38,11 +38,14 @@ describe "ClassMirror" do
     end
 
     it "can find a nested constant" do
-      @m.constant("ClassFixtureNested::ClassFixtureNestedNested").name.should == ClassFixtureNestedNested.name
+      cname = ClassFixture::ClassFixtureNested::ClassFixtureNestedNested.name
+      ct = @m.constant(cname)
+      ct.name.should == "ClassFixtureNestedNested"
+      ct.value.name.should == cname
     end
 
     it "known inner classes" do
-      @m.nested_classes.first.name.should == ClassFixtureNested.name
+      @m.nested_classes.first.name.should == ClassFixture::ClassFixtureNested.name
     end
 
     it "known instance methods" do
@@ -72,25 +75,18 @@ describe "ClassMirror" do
     end
 
     it "nesting" do
-      @m.nesting.last
-      @m.nesting.last.name.should == ClassFixture.name
+      m = @r.reflect_object ClassFixture::ClassFixtureNested
+      nesting = m.nesting
+      nesting.should == [ClassFixture::ClassFixtureNested, ClassFixture]
     end
 
-    # it "source locations" do
-    #   @m.source_files.any? {|l| l =~ /spec\/class_spec.rb/ }.should.be_true
-    #   @m.source_files.any? {|l| l =~ /fixtures\/class_spec.rb/ }.should.be_true
-    # end
+    it "source locations" do
+      @m.source_files.any? {|l| l =~ /spec\/class_spec.rb/ }.should.be_true
+      @m.source_files.any? {|l| l =~ /fixtures\/class_spec.rb/ }.should.be_true
+    end
 
-    # it "value of a known constant" do
-    #   @m.value_of("Foo").should == "Bar"
-    # end
-
-    # it "value of a known class variable" do
-    #   @m.value_of("cva").should == 1
-    # end
-
-    # it "value of a known class instance variable" do
-    #   @m.value_of("cvia").should == 1
-    # end
+    it "value of a known constant" do
+      @m.constant("Foo").value.should == "Bar"
+    end
   end
 end
