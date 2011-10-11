@@ -27,5 +27,3 @@ module MSpec
     end
   end
 end
-
-MSpec.store :guarding_exceptions, Reflection::CapabilitiesExceeded
