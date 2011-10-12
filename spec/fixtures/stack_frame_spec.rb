@@ -1,5 +1,5 @@
 class FrameFixture
-  def stop; Thread.stop; end
-  def return; 2; end
-  def raise; raise "stop"; end
+  def my_stop(argument); local = "local_value"; Thread.stop; end
+  def my_return; 2; end
+  def my_raise; raise "stop"; end
 end

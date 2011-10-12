@@ -6,11 +6,12 @@ describe "StackFrameMirror" do
     @r = reflection
     @t = Thread.start do
       t = FrameFixture.new
-      t.stop
-      t.return
+      t.my_stop("argument_value")
+      t.my_return
     end
     @m = @r.reflect_object(@t)
     @s = @m.stack
+    @f = @s.detect {|frame| frame.name == "my_stop" }
   end
 
   it "should return StackFrameMirrors when reflecting on a Threads stack" do
@@ -18,25 +19,31 @@ describe "StackFrameMirror" do
   end
 
   it "the step offset" do
-    @s.first.step_offset.should be_kind_of(Fixnum)
+    @f.step_offset.should be_kind_of Fixnum
+  end
+
+  it "the source offset" do
+    offs = @f.source_offset
+    offs.should be_kind_of Fixnum
+    offs.should < @f.method.source.size
   end
 
   it "the receiver" do
-    @s.first.receiver.should be_kind_of(A)
+    @f.receiver.target_class.name.should == "FrameFixture"
   end
 
-  it "the self" do
-    @s.first.self.should be_kind_of(A)
+  it "the self should be the receiver for a regular method" do
+    @f.self.reflectee.should == @f.receiver.reflectee
   end
 
   it "the arguments" do
-    @s.first.arguments.keys.should == ["a"]
-    @s.first.arguments.values.should == [1]
+    @f.arguments.keys.should == ["argument"]
+    @f.arguments.values.collect(&:name).should == ["argument_value".inspect]
   end
 
   it "the locals" do
-    @s.first.locals.keys.should == ["a"]
-    @s.first.locals.values.should == [1]
+    @f.locals.keys.should include "local"
+    @f.locals.values.collect(&:name).should include "local_value".inspect
   end
 
   it "the variable context" do
@@ -44,30 +51,29 @@ describe "StackFrameMirror" do
   end
 
   it "restart the frame" do
-    f = @s.first
-    @s.first.restart
-    @s.first.should == f
-    @s.first.step_offset.should == 1
+    prev_step_offset = @f.step_offset
+    @f.restart
+    @f.step_offset.should < prev_step_offset
+    @m.stack.first.should == @f
   end
 
   it "pop the frame" do
-    f = @s.first
-    @s.first.pop
-    @s.first.should_not == f
-    @s.first.step_offset.should == 1
+    frame_before_f = @s[@s.index(@f) + 1]
+    @f.pop
+    @m.stack.first.should == frame_before_f
   end
 
   it "step over the current call" do
-    sp = @s.first.step_offset
-    @s.first.step(:over)
-    @s.first.step_offset.should == sp + 1
+    @f.restart
+    prev_step_offset = @f.step_offset
+    @f.step(:over)
+    @f.step_offset.should == prev_step_offset + 1
   end
 
   it "step into the next call" do
-    f = @s.first
-    @s.first.step(:into)
-    @s.first.step_offset.should == 1
-    @s.first.should_not == f
-    @s[1].should == f
+    @f.restart
+    @f.step(:into)
+    @m.stack[0].should_not == @f
+    @m.stack[1].should == @f
   end
 end
