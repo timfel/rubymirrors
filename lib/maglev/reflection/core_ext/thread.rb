@@ -56,6 +56,7 @@ class Thread
   primitive '__wakeup', 'rubyResume'
   primitive '__value', 'value:'
   primitive '_report', '_reportOfSize:'
+  primitive '__is_continuation', 'isContinuation'
 end
 
 # require 'maglev/objectlog'
@@ -191,88 +192,6 @@ end
 #   primitive '_report', '_reportOfSize:'
 #   def report(depth = self.__stack_depth)
 #     _report(depth)
-#   end
-
-#   class Frame
-#     class FrameHash < Hash
-#       attr_writer :frame
-
-#       def []=(key, value)
-#         super
-#         if @frame
-#           @frame.thread.__frame_at_temp_named_put(@frame.index, key.to_s, value)
-#         end
-#       end
-#     end
-
-#     attr_reader :method, :index, :thread
-
-#     def initialize(gsmethod, st_idx, thread)
-#       @method = ruby_method(gsmethod)
-#       @index = st_idx
-#       @thread = thread
-#     end
-
-#     # Frame actions
-
-#     def restart
-#       @thread.__trim_stack_to_level(@index)
-#     end
-
-#     def pop
-#       @thread.__trim_stack_to_level(@index + 1)
-#     end
-
-#     def step(*args)
-#       raise StandardError, "can only step top of stack" unless @index == 1
-#       @thread.step(*args)
-#     end
-
-#     # Frame report
-
-#     def receiver
-#       detailed_report[1]
-#     end
-
-#     def self
-#       detailed_report[2]
-#     end
-
-#     def selector
-#       detailed_report[3]
-#     end
-
-#     def step_offset
-#       detailed_report[4]
-#     end
-
-#     def source_offset
-#       self.method.step_offsets[self.step_offset - 1] -
-#         self.method.step_offsets[0]
-#     end
-
-#     def args_and_temps
-#       names = detailed_report[6]
-#       values = detailed_report[7]
-#       (values.size - names.size).times {|i| names << ".t#{i+1}"}
-#       fh = FrameHash[names.zip(values)]
-#       fh.frame = self
-#       fh
-#     end
-
-#     def variable_context
-#       @thread.__frame_contents_at(@index)[3]
-#     end
-
-#     def inspect
-#       "#<Frame #{@index}: #{@method.in_class}##{@method.name} >> #{@thread.inspect}>"
-#     end
-
-#     private
-#     def detailed_report
-#       @report ||= @thread.__gsi_debugger_detailed_report_at(@index)
-#     end
-
 #   end
 
 #   # The list of saved threads in the ObjectLog
