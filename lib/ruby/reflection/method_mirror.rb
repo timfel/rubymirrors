@@ -31,6 +31,10 @@ module Ruby
       def optional_arguments
         args(:opt)
       end
+
+      def required_arguments
+        args(:req)
+      end
     end
   end
 end
