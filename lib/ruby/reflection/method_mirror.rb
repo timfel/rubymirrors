@@ -7,6 +7,10 @@ module Ruby
       def file
         source_location.first
       end
+
+      def line
+        source_location.last
+      end
     end
   end
 end
