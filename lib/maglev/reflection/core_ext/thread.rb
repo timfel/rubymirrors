@@ -1,62 +1,62 @@
 require 'maglev/objectlog'
 
-# class Thread
-#   VariableContext = __resolve_smalltalk_global(:VariableContext)
-#   VariableContext.primitive '[]', 'at:'
-#   VariableContext.primitive '[]=', 'at:put:'
-#   VariableContext.primitive 'size', 'size'
+class Thread
+  VariableContext = __resolve_smalltalk_global(:VariableContext)
+  VariableContext.primitive '[]', 'at:'
+  VariableContext.primitive '[]=', 'at:put:'
+  VariableContext.primitive 'size', 'size'
 
-#   # => GsNMethod
-#   primitive '__method_at', 'methodAt:'
-#   # => Fixnum
-#   primitive '__stack_depth', 'stackDepth'
-#   # Remove all frames above [Fixnum]
-#   primitive '__trim_stack_to_level', '_trimStackToLevel:'
-#   # Change temporary at level to value
-#   primitive '__frame_at_temp_named_put', '_frameAt:tempNamed:put:'
-#   # => Array
-#   #    with:
-#   #  1  gsMethod
-#   #  2  self
-#   #  4  selector
-#   #  5  quickStepPoint (offset into sourceOffsets)
-#   #  6  sourceOffsets (the points where each step would be at)
-#   #  7  argAndTempNames
-#   #  8  argAndTempValues (maybe smaller or larger than argAndTempNames)
-#   #  9  sourceString
-#   #  10 ipOffset
-#   #  11 markerOrException
-#   primitive '__gsi_debugger_detailed_report_at', '_gsiDebuggerDetailedReportAt:'
-#   # Stepping
-#   primitive '__step_over_in_frame', '_stepOverInFrame:'
-#   # Persistence conversions
-#   primitive 'convert_to_persistable_state', "convertToPersistableState"
-#   primitive 'convert_to_runnable_state', 'convertToRunnableState'
-#   primitive '__ar_stack', 'arStack'
-#   primitive '__client_data', '_clientData'
-#   #  Private.  Returns an Array describing the specified level in the receiver.
-#   #  aLevel == 1 is top of stack.  If aLevel is less than 1 or greater than
-#   #  stackDepth, returns nil.
-#   #  The result Array contains:
-#   #  offset item
-#   #  -----  -----
-#   #    0    gsMethod
-#   #    1    ipOffset
-#   #    2    frameOffset (zero-based)
-#   #    3    varContext
-#   #    4    saveProtectedMode
-#   #    5    markerOrException
-#   #    6    nil (not used)
-#   #    7    self (possibly nil in a ComplexBlock)
-#   #    8    argAndTempNames (an Array of Symbols or Strings)
-#   #    9    receiver
-#   #   10    arguments and temps, if any
-#   primitive '__frame_contents_at', '_frameContentsAt:'
-#   primitive '__run' , 'rubyRun'
-#   primitive '__wakeup', 'rubyResume'
-#   primitive '__value', 'value:'
-#   primitive '_report', '_reportOfSize:'
-# end
+  # => GsNMethod
+  primitive '__method_at', 'methodAt:'
+  # => Fixnum
+  primitive '__stack_depth', 'stackDepth'
+  # Remove all frames above [Fixnum]
+  primitive '__trim_stack_to_level', '_trimStackToLevel:'
+  # Change temporary at level to value
+  primitive '__frame_at_temp_named_put', '_frameAt:tempNamed:put:'
+  # => Array
+  #    with:
+  #  1  gsMethod
+  #  2  self
+  #  4  selector
+  #  5  quickStepPoint (offset into sourceOffsets)
+  #  6  sourceOffsets (the points where each step would be at)
+  #  7  argAndTempNames
+  #  8  argAndTempValues (maybe smaller or larger than argAndTempNames)
+  #  9  sourceString
+  #  10 ipOffset
+  #  11 markerOrException
+  primitive '__gsi_debugger_detailed_report_at', '_gsiDebuggerDetailedReportAt:'
+  # Stepping
+  primitive '__step_over_in_frame', '_stepOverInFrame:'
+  # Persistence conversions
+  primitive 'convert_to_persistable_state', "convertToPersistableState"
+  primitive 'convert_to_runnable_state', 'convertToRunnableState'
+  primitive '__ar_stack', 'arStack'
+  primitive '__client_data', '_clientData'
+  #  Private.  Returns an Array describing the specified level in the receiver.
+  #  aLevel == 1 is top of stack.  If aLevel is less than 1 or greater than
+  #  stackDepth, returns nil.
+  #  The result Array contains:
+  #  offset item
+  #  -----  -----
+  #    0    gsMethod
+  #    1    ipOffset
+  #    2    frameOffset (zero-based)
+  #    3    varContext
+  #    4    saveProtectedMode
+  #    5    markerOrException
+  #    6    nil (not used)
+  #    7    self (possibly nil in a ComplexBlock)
+  #    8    argAndTempNames (an Array of Symbols or Strings)
+  #    9    receiver
+  #   10    arguments and temps, if any
+  primitive '__frame_contents_at', '_frameContentsAt:'
+  primitive '__run' , 'rubyRun'
+  primitive '__wakeup', 'rubyResume'
+  primitive '__value', 'value:'
+  primitive '_report', '_reportOfSize:'
+end
 
 # require 'maglev/objectlog'
 

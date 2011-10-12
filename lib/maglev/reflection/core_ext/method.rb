@@ -22,15 +22,11 @@ class UnboundMethod
   end
 end
 
-# class GsNMethodWrapper < UnboundMethod
-#   def initialize(gsmethod); @_st_gsmeth = gsmethod; end
-#   def inspect; "#<GsNMethodWrapper: #{self.name}>"; end
-#   # Overrides
-#   def name; @_st_gsmeth.__name; end
-#   def file_out(ignored); raise StandardError, "not an ordinary method def"; end
-#   def file=(ignored); raise TypeError, "cannot modify a Smalltalk method"; end
-#   def line=(ignored); raise TypeError, "cannot modify a Smalltalk method"; end
-# end
+class GsNMethodWrapper < UnboundMethod
+  def initialize(gsmethod); @_st_gsmeth = gsmethod; end
+  def inspect; "#<GsNMethodWrapper: #{self.name}>"; end
+  def name; @_st_gsmeth.__name; end
+end
 
 # class UnboundMethod
 #   def step_offsets
