@@ -157,9 +157,9 @@ describe "MethodMirror" do
       it "can delete a method from its home class" do
         c = MethodSpecFixture
         m = @r.reflect_object c.instance_method(:removeable_method)
-        c.instance_methods.should include("removeable_method")
+        c.instance_methods(false).map(&:to_s).should include("removeable_method")
         m.delete
-        c.instance_methods.should_not include("removeable_method")
+        c.instance_methods(false).map(&:to_s).should_not include("removeable_method")
       end
     end
   end
