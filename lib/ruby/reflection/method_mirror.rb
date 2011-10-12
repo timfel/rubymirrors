@@ -44,7 +44,16 @@ module Ruby
         try_send(:parameters).map { |t,a| a.to_s }
       end
 
+      def protected?
+        visibility? :protected
+      end
+
       private
+
+      def visibility?(type)
+        list = try_send(:owner).send("#{type}_instance_methods")
+        list.any? { |m| m.to_s == selector }
+      end
 
       def try_send(method)
         raise CapabilitiesExceeded unless @subject.respond_to? method
