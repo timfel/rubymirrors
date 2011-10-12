@@ -35,6 +35,10 @@ module Ruby
       def required_arguments
         args(:req)
       end
+
+      def arguments
+        try_send(:parameters).map { |t,a| a.to_s }
+      end
     end
   end
 end
