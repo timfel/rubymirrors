@@ -3,6 +3,7 @@ class Module
   RubyNameSpace.primitive 'parent', 'parent'
   RubyNameSpace.primitive 'my_class', 'myClass'
   RubyNameSpace.primitive 'keys', 'keys'
+  RubyNameSpace.primitive 'values', 'values'
   RubyNameSpace.primitive '[]', 'at:'
 
   primitive '__transient_namespace', 'transientNameSpace:'

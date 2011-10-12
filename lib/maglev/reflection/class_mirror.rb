@@ -121,10 +121,12 @@ module Maglev
       end
 
       private
-      # Traverse the Ruby namespace hierarchy and execute block for all classes
-      # and modules.  Returns an IdentitySet of all classes and modules found.
-      # Skips autoloads (i.e., does not trigger them and does not yield them to
-      # the block).
+      # Maglev specific, not public reflection API.
+      #
+      # Traverse the Ruby namespace hierarchy and execute block for
+      # all classes and modules.  Returns an IdentitySet of all
+      # classes and modules found.  Skips autoloads (i.e., does not
+      # trigger them and does not yield them to the block).
       #
       # @param [Module] klass The Class or Module object to start traversal.
       #         Default is Object.
@@ -138,41 +140,14 @@ module Maglev
       def each_module(from=Object, rg=IdentitySet.new, &block)
         unless rg.include?(from)
           rg.add from
-          yield(self.class.new(from)) if block
-          from.constants.each do |c|
-            unless from.autoload?(c)
-              begin
-                obj = from.const_get(c)
-                each_module(obj, rg, &block) if Module === obj
-              rescue Exception
-                next
-              end
-            end
+          yield Mirror.reflect(from) if block
+          if ns = from.__transient_namespace(1)
+            ns.values.each {|c| each_module(c, rg, &block) if Module === c }
           end
         end
         rg
       end
 
-      # The namespace (lexical scope) in which the Module was defined
-      def namespace
-        if ts = __transient_namespace(1)
-          return ts.parent
-        end
-      end
-
-      # Return an object named in the Ruby namespace.
-      #
-      # @param [String] name The name of the object. E.g., "Object",
-      #         "Errno::EACCES", "Foo::Bar::Baz".
-      #
-      # @return [Object] the named object.
-      #
-      # @raise [NameError] if the name can't be found
-      def find_in_namespace(name)
-        name.split('::').inject(self) do |parent, name|
-          obj = parent.const_get name
-        end
-      end
     end
   end
 end
