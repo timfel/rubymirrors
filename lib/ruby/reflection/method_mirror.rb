@@ -27,6 +27,10 @@ module Ruby
       def splat_argument
         args(:rest).first
       end
+
+      def optional_arguments
+        args(:opt)
+      end
     end
   end
 end
