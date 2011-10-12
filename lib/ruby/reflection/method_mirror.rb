@@ -19,6 +19,10 @@ module Ruby
       def defining_class
         try_send(:owner)
       end
+
+      def delete
+        try_send(:owner).send(:remove_method, @subject.name)
+      end
     end
   end
 end
