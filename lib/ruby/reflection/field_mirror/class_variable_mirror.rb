@@ -5,7 +5,7 @@ module Ruby
         @object.class_variable_get(@name)
       end
 
-      def value= o
+      def value=(o)
         @object.class_variable_set(@name, o)
       end
 

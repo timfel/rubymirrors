@@ -5,7 +5,7 @@ module Ruby
         @object.const_get(@name)
       end
 
-      def value= o
+      def value=(o)
         @object.const_set(@name, o)
       end
 
