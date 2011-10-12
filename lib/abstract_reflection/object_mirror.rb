@@ -14,7 +14,7 @@ module AbstractReflection
       raise CapabilitiesExceeded
     end
 
-    # @return [Class] the actual runtime class object
+    # @return [ClassMirror] the a class mirror on the runtime class object
     def target_class
       raise CapabilitiesExceeded
     end
