@@ -157,6 +157,15 @@ module AbstractReflection
       raise CapabilitiesExceeded
     end
 
+    # Determine whether this method references the passed name. This
+    # should be in a state useable enough to allow e.g. dead local
+    # detection.
+    #
+    # @return [true, false]
+    def references_name?(string)
+      raise CapabilitiesExceeded
+    end
+
     # Each method contributes a certain percentage to the runtime of
     # the system. This method can be used to query the system for the
     # percentage of the mirrored method (in the range 0 < p < 1). If
