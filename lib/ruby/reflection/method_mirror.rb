@@ -11,6 +11,10 @@ module Ruby
       def line
         source_location.last
       end
+
+      def selector
+        @subject.name.to_s
+      end
     end
   end
 end
