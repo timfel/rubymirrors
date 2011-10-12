@@ -23,6 +23,10 @@ module Ruby
       def delete
         try_send(:owner).send(:remove_method, @subject.name)
       end
+
+      def splat_argument
+        args(:rest).first
+      end
     end
   end
 end
