@@ -17,7 +17,7 @@ module Ruby
       def initialize(obj)
         super
         @object = obj.object
-        @name = obj.name
+        @name = obj.name.to_s
       end
 
       def name
