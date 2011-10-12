@@ -273,15 +273,6 @@ end
 #       @report ||= @thread.__gsi_debugger_detailed_report_at(@index)
 #     end
 
-#     def ruby_method(gsmethod)
-#       label = gsmethod.__name.to_s
-#       cls = gsmethod.__in_class
-#       if cls.instance_methods.include?(label)
-#         cls.instance_method(label.to_sym)
-#       else
-#         GsNMethodWrapper.new(gsmethod)
-#       end
-#     end
 #   end
 
 #   # The list of saved threads in the ObjectLog
