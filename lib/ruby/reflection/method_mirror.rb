@@ -15,6 +15,10 @@ module Ruby
       def selector
         @subject.name.to_s
       end
+
+      def defining_class
+        try_send(:owner)
+      end
     end
   end
 end
