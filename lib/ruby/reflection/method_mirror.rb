@@ -24,6 +24,10 @@ module Ruby
         try_send(:owner).send(:remove_method, @subject.name)
       end
 
+      def block_argument
+        args(:block).first
+      end
+
       def splat_argument
         args(:rest).first
       end
