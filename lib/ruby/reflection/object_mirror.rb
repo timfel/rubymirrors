@@ -8,6 +8,10 @@ module Ruby
         field_mirrors @subject.instance_variables
       end
 
+      def target_class
+        Mirror.reflect @subject.class
+      end
+
       private
       def field_mirrors(list, subject = @subject)
         list.collect do |name|
