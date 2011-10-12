@@ -1,6 +1,6 @@
 module Ruby
   class Reflection
-    class ClassVariableMirror < FieldMirror      
+    class ClassVariableMirror < FieldMirror
       def value
         @object.class_variable_get(@name)
       end

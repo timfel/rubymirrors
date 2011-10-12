@@ -1,6 +1,6 @@
 module Ruby
   class Reflection
-    class ConstantMirror < FieldMirror      
+    class ConstantMirror < FieldMirror
       def value
         @object.const_get(@name)
       end
