@@ -112,12 +112,6 @@ module AbstractReflection
       raise CapabilitiesExceeded
     end
 
-    # Returns the class this method was defined in.
-    # @return [ClassMirror]
-    def in_class
-      raise CapabilitiesExceeded
-    end
-
     # Predicate to determine whether this method was compiled for closure
     #
     # @return [true, false]
