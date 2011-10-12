@@ -39,6 +39,23 @@ module Ruby
       def arguments
         try_send(:parameters).map { |t,a| a.to_s }
       end
+
+      private
+
+      def try_send(method)
+        raise CapabilitiesExceeded unless @subject.respond_to? method
+        @subject.send(method)
+      end
+
+      def args(type)
+        args = []
+        try_send(:parameters).select { |t,n| args << n.to_s if t == type }
+        args
+      end
+
+      def source_location
+        try_send(:source_location) or raise(CapabilitiesExceeded)
+      end
     end
   end
 end
