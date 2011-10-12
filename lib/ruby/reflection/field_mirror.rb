@@ -6,15 +6,11 @@ module Ruby
       reflect! Field
 
       def self.mirror_class(field)
-        if reflects?(field)
-          case
-          when field.name.start_with?("@@")
-            ClassVariableMirror
-          when field.name.start_with?("@")
-            InstanceVariableMirror
-          else
-            ConstantMirror
-          end
+        return unless reflects? field
+        case field.name.to_s
+        when /^@@/ then ClassVariableMirror
+        when /^@/  then InstanceVariableMirror
+        else            ConstantMirror
         end
       end
 
