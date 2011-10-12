@@ -51,5 +51,9 @@ module AbstractReflection
     def binding
       raise CapabilitiesExceeded
     end
+
+    def method
+      raise CapabilitiesExceeded
+    end
   end
 end
