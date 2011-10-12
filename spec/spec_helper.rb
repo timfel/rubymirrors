@@ -1,4 +1,6 @@
-mirror_api = ENV["MIRRORS"] || "ruby"
+RUBY_ENGINE = 'ruby' unless defined? RUBY_ENGINE
+mirror_api  = ENV["MIRRORS"] || RUBY_ENGINE
+mirror_api  = 'rubinius' if mirror_api == 'rbx'
 
 $:.push File.expand_path("..", __FILE__)
 $:.push File.expand_path("../../lib", __FILE__)
