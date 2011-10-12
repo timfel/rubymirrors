@@ -22,7 +22,7 @@ module Ruby
       end
 
       def delete
-        @object.remove_const(@name)
+        @object.send(:remove_const, @name)
       end
     end
   end
