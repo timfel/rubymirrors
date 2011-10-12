@@ -48,6 +48,10 @@ module Ruby
         visibility? :protected
       end
 
+      def public?
+        visibility? :public
+      end
+
       private
 
       def visibility?(type)
