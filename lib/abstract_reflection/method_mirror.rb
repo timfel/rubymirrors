@@ -240,5 +240,9 @@ module AbstractReflection
     def protected!
       raise CapabilitiesExceeded
     end
+
+    def delete
+      raise CapabilitiesExceeded
+    end
   end
 end
