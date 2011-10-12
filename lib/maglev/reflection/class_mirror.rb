@@ -120,7 +120,6 @@ module Maglev
         ary
       end
 
-      private
       # Maglev specific, not public reflection API.
       #
       # Traverse the Ruby namespace hierarchy and execute block for
