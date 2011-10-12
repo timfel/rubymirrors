@@ -1,11 +1,11 @@
 module Ruby
   class Reflection
-    class ConstantMirror < FieldMirror      
+    class ConstantMirror < FieldMirror
       def value
         @object.const_get(@name)
       end
 
-      def value= o
+      def value=(o)
         @object.const_set(@name, o)
       end
 
@@ -22,7 +22,7 @@ module Ruby
       end
 
       def delete
-        @object.remove_const(@name)
+        @object.send(:remove_const, @name)
       end
     end
   end

@@ -30,7 +30,7 @@ module AbstractReflection
       raise CapabilitiesExceeded
     end
 
-    # @return [String, File] The filename
+    # @return [String] The filename
     def file
       raise CapabilitiesExceeded
     end
@@ -238,6 +238,10 @@ module AbstractReflection
     end
 
     def protected!
+      raise CapabilitiesExceeded
+    end
+
+    def delete
       raise CapabilitiesExceeded
     end
   end

@@ -28,13 +28,13 @@ module AbstractReflection
       # @param [Object] the object to reflect upon
       # @return [true, false]
       def reflects?(obj)
-        @reflected_modules.any? {|m| m === obj }
+        @reflected_modules.any? { |mod| mod === obj }
       end
 
       # A shortcut to define reflects? behavior.
       # @param [Module] the module whose instances this mirror reflects
-      def reflect!(*classes)
-        @reflected_modules = classes
+      def reflect!(*modules)
+        @reflected_modules = modules
         register_mirror self
       end
 

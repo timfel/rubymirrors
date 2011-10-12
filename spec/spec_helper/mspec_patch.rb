@@ -6,7 +6,7 @@ class GuardException
   end
 
   def finish(*args)
-    print "Skipped '#{@message}' (#{@exception} in #{@method}).\n"
+    print "Skipped '#{@message}'\n\t#{@exception}\n\tin #{@method}).\n\n"
   end
 end
 
