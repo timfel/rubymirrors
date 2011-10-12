@@ -45,6 +45,10 @@ module Ruby
       def constants
         field_mirrors @subject.constants
       end
+
+      def method(name)
+        Mirror.reflect @subject.instance_method(name)
+      end
     end
   end
 end
