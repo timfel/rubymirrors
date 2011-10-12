@@ -4,7 +4,15 @@ module Maglev
   class Reflection
     class MethodMirror < Mirror
       include AbstractReflection::MethodMirror
-      reflect! UnboundMethod
+      reflect! Method, UnboundMethod, GsNMethod
+
+      # Adding support for on-demand wrapping of GsNMethods
+      def initialize(obj)
+        super
+        if @subject.kind_of? GsNMethod
+          @subject = wrap_gsmeth(@subject)
+        end
+      end
 
       def file
         (@subject.source_location || [])[0]
@@ -106,6 +114,16 @@ module Maglev
       end
 
       private
+      def wrap_gsmeth(gsmethod)
+        label = gsmethod.__name.to_s
+        cls = gsmethod.__in_class
+        if cls.instance_methods.include?(label)
+          cls.instance_method(label)
+        else
+          GsNMethodWrapper.new(gsmethod)
+        end
+      end
+
       def gsmeth
         @subject.__st_gsmeth
       end

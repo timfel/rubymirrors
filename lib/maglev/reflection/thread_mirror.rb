@@ -8,11 +8,15 @@ module Maglev
 
       def stack
         @subject.__stack_depth.times.collect do |idx|
-          rmeth = GsNMethodWrapper.new(@subject.__method_at(idx + 1))
-          method = Mirror.reflect rmeth
+          method = Mirror.reflect @subject.__method_at(idx + 1)
           frame = StackFrame.new method, idx + 1, self
           StackFrameMirror.reflect frame
         end
+      end
+
+      # Maglev specific
+      def thread_report(index)
+        @subject.__gsi_debugger_detailed_report_at(index)
       end
     end
   end
