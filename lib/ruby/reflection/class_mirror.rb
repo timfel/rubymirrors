@@ -13,10 +13,12 @@ module Ruby
       end
 
       def source_files
-        method_objects = @subject.instance_methods.collect do |name|
-          @subject.instance_method(name)
+        locations = @subject.instance_methods(false).collect do |name|
+          method = @subject.instance_method(name)
+          file   = method.source_location if method.respond_to? :source_location
+          file.first if file
         end
-        method_objects.collect(&:source_location).collect(&:first).uniq
+        locations.compact.uniq
       end
 
       def singleton_class
@@ -42,6 +44,10 @@ module Ruby
 
       def constants
         field_mirrors @subject.constants
+      end
+
+      def method(name)
+        Mirror.reflect @subject.instance_method(name)
       end
     end
   end
