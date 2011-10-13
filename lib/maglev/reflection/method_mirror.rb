@@ -21,7 +21,7 @@ module Maglev
       def file=(string)
         raise CapabilitiesExceeded unless regular_method?
         reload_after do
-          defining_class.class_eval(source, string, line)
+          defining_class.reflectee.class_eval(source, string, line)
         end
       end
 
@@ -32,7 +32,7 @@ module Maglev
       def line=(num)
         raise CapabilitiesExceeded unless regular_method?
         reload_after do
-          defining_class.class_eval(source, file, num)
+          defining_class.reflectee.class_eval(source, file, num)
         end
       end
 
@@ -44,9 +44,9 @@ module Maglev
         raise CapabilitiesExceeded unless regular_method?
         reload_after do
           if file.nil? && line.nil? # Smalltalk method
-            defining_class.__compile_method_category_environment_id(str, '*maglev-dynamic-compile-unclassified', 1)
+            defining_class.reflectee.__compile_method_category_environment_id(str, '*maglev-dynamic-compile-unclassified', 1)
           else # Ruby method
-            defining_class.class_eval(str, file, line)
+            defining_class.reflectee.class_eval(str, file, line)
           end
         end
       end
@@ -56,7 +56,7 @@ module Maglev
       end
 
       def defining_class
-        gsmeth.__in_class
+        Mirror.reflect gsmeth.__in_class
       end
 
       def arguments
@@ -139,7 +139,7 @@ module Maglev
       end
 
       def reload_after(&block)
-        cls = defining_class
+        cls = defining_class.reflectee
         sel = selector.to_sym
         yield
         @subject = cls.instance_method(sel)

@@ -24,7 +24,7 @@ describe "MethodMirror" do
       end
 
       it "defining class" do
-        @m.defining_class.should == @f.new.source_location[3]
+        @m.defining_class.name.should == @f.new.source_location[3].name
       end
 
       it "source" do
@@ -44,7 +44,7 @@ describe "MethodMirror" do
       it "source=" do
         @m.source = @m.source.sub("__FILE__", "__FILE__.to_s")
         @m.source.should =~ /[__FILE__.to_s, __LINE__, __method__.to_s, self.class]/
-        @m.defining_class.should == MethodSpecFixture
+        @m.defining_class.name.should == MethodSpecFixture.name
         m = @r.reflect_object MethodSpecFixture.instance_method(:source_location)
         m.source.should =~ /[__FILE__.to_s, __LINE__, __method__.to_s, self.class]/
       end
