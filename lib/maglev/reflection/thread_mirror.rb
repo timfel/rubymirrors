@@ -20,12 +20,16 @@ module Maglev
       end
 
       def run
-        raise RuntimeError, "cannot run a continuation with #run"
+        if @subject.__is_continuation
+          raise RuntimeError, "cannot run a continuation with #run"
+        end
         super
       end
 
       def wakeup
-        raise RuntimeError, "cannot wakeup a continuation with #wakeup"
+        if @subject.__is_continuation
+          raise RuntimeError, "cannot wakeup a continuation with #wakeup"
+        end
         super
       end
 
