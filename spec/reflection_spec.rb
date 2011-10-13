@@ -42,16 +42,16 @@ describe Reflection do
       l = @r.implementations_of("unique_reflect_fixture_method")
       l.should be_kind_of Array
       l.size.should == 1
-      l.first.name.should == "unique_reflect_fixture_method"
-      l.first.defining_class.should == "ReflectClass"
+      l.first.selector.should == "unique_reflect_fixture_method"
+      l.first.defining_class.name.should == "ReflectClass"
     end
 
     it "can find senders of a method" do
       l = @r.senders_of("unique_reflect_sent_method")
       l.should be_kind_of Array
       l.size.should == 1
-      l.first.name.should == "unique_reflect_fixture_method"
-      l.first.defining_class.should == "ReflectClass"
+      l.first.selector.should == "unique_reflect_fixture_method"
+      l.first.defining_class.name.should == "ReflectClass"
     end
 
     it "returns all available threads" do
