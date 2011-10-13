@@ -8,7 +8,7 @@ describe "FieldMirror" do
     end
 
     it "reports the var value" do
-      @m.value.should == @nom.sub(/@@?/, '')
+      @m.value.name.should == @nom.sub(/@@?/, '').inspect
     end
 
     it "can change the value" do
@@ -19,9 +19,9 @@ describe "FieldMirror" do
     end
 
     it "always shows the current value" do
-      @m.value.should == @nom.sub(/@@?/, '')
+      @m.value.name.should == @nom.sub(/@@?/, '').inspect
       @o.send(:"#{@class_side}_variable_set", @nom, "changed")
-      @m.value.should == "changed"
+      @m.value.name.should == "changed".inspect
     end
 
     it "reports vars as private only" do
@@ -80,20 +80,20 @@ describe "FieldMirror" do
     end
 
     it "reports the ivar value" do
-      @m.value.should == @name.downcase
+      @m.value.name.should == @name.downcase.inspect
     end
 
     it "can change the value" do
-      old_value = @m.value
+      old_value = @m.value.reflectee
       @m.value = "changed"
       @o.const_get(@name).should == "changed"
       @m.value = old_value
     end
 
     it "always shows the current value" do
-      @m.value.should == @name.downcase
+      @m.value.name.should == @name.downcase.inspect
       @o.const_set(@name, "changed")
-      @m.value.should == "changed"
+      @m.value.name.should == "changed".inspect
     end
 
     it "reports constants as public" do
