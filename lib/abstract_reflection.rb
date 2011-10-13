@@ -57,6 +57,20 @@ module AbstractReflection
     raise CapabilitiesExceeded
   end
 
+  # Query the system for implementors of a particular message
+  # @param [String] the message name
+  # @return [Array<MethodMirror>] the implementing methods
+  def implementations_of(message)
+    raise CapabilitiesExceeded
+  end
+
+  # Query the system for senders of a particular message
+  # @param [String] the message name
+  # @return [Array<MethodMirror>] the sending methods
+  def senders_of(message)
+    raise CapabilitiesExceeded
+  end
+
   # Return the currently active threads in the system
   # @return [Array<ThreadMirror>] a list of thread mirrors
   def threads
