@@ -46,6 +46,10 @@ module Ruby
         field_mirrors @subject.constants
       end
 
+      def nested_classes
+        constants.collect(&:value).select {|c| ClassMirror === c }
+      end
+
       def method(name)
         Mirror.reflect @subject.instance_method(name)
       end

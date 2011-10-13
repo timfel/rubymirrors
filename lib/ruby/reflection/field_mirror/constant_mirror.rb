@@ -2,7 +2,14 @@ module Ruby
   class Reflection
     class ConstantMirror < FieldMirror
       def value
-        @object.const_get(@name)
+        if path = @object.autoload?(@name)
+          unless $LOADED_FEATURES.include?(path) ||
+              $LOADED_FEATURES.include?(File.expand_path(path))
+            # Do not trigger autoload
+            return nil
+          end
+        end
+        Mirror.reflect @object.const_get(@name)
       end
 
       def value=(o)

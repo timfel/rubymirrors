@@ -53,8 +53,7 @@ module Maglev
       end
 
       def nested_classes
-        cls = constants.collect(&:value).select {|c| c.kind_of? Module }
-        mirrors cls
+        constants.collect(&:value).select {|c| ClassMirror === c }
       end
 
       def source_files
