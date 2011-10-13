@@ -131,7 +131,7 @@ module Maglev
       # Removes the Ruby suffix from the GsNMethod selector
       def prefix_if_ruby_selector(sym)
         selector = sym.to_s
-        selector[0...selector.rindex(?#)]
+        selector[0...(selector.rindex(?#) || -1)]
       end
 
       def regular_method?
