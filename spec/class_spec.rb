@@ -86,7 +86,7 @@ describe "ClassMirror" do
     end
 
     it "value of a known constant" do
-      @m.constant("Foo").value.should == "Bar"
+      @m.constant("Foo").value.name.should == "Bar".inspect
     end
   end
 end
