@@ -71,7 +71,8 @@ module AbstractReflection
       raise CapabilitiesExceeded
     end
 
-    # The classes nested within the subject.
+    # The classes nested within the subject. Should _not_ trigger
+    # autloads!
     #
     # @return [Array<ClassMirror>]
     def nested_classes
@@ -108,6 +109,7 @@ module AbstractReflection
 
     # The constants defined within this class. This includes nested
     # classes and modules, but also all other kinds of constants.
+    # This should _not_ trigger autoloads!
     #
     # @return [Array<FieldMirror>]
     def constants
@@ -115,7 +117,8 @@ module AbstractReflection
     end
 
     # Searches for the named constant in the mirrored namespace. May
-    # include a colon (::) separated constant path.
+    # include a colon (::) separated constant path. This _may_ trigger
+    # an autoload!
     #
     # @return [ClassMirror, nil] the requested constant, or nil
     def constant(name)
