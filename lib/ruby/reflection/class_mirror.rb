@@ -22,7 +22,7 @@ module Ruby
       end
 
       def singleton_class
-        Mirror.reflect_object @subject.singleton_class
+        Mirror.reflect @subject.singleton_class
       end
 
       def mixins

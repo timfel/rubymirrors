@@ -66,10 +66,6 @@ module Maglev
         method_objects.collect(&:source_location).collect(&:first).uniq
       end
 
-      def singleton_class
-        Mirror.reflect_object @subject.singleton_class
-      end
-
       def mixins
         mirrors @subject.ancestors.reject {|m| m.is_a? Class }
       end
