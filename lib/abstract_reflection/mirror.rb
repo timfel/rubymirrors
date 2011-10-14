@@ -23,7 +23,16 @@ module AbstractReflection
         target_mirror = nil
         @@mirrors.detect {|klass| target_mirror = klass.mirror_class(obj) }
         raise CapabilitiesExceeded if target_mirror.nil?
-        target_mirror.new(obj).tap {|m| m.reflection = reflection }
+        target_mirror.new(obj, reflection)
+      end
+
+      # The constructor, sets the @reflection instance variable before
+      # calling initialize.
+      def new(obj, reflection)
+        basic_new_object = allocate
+        basic_new_object.reflection = reflection
+        basic_new_object.send(:initialize, obj)
+        basic_new_object
       end
 
       # Decides whether the given class can reflect on [obj]
