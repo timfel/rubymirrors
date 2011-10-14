@@ -54,7 +54,19 @@ module Ruby
       Object.const_get("#{engine.upcase}_VERSION")
     end
 
+    def implementations_of(str)
+      mirrors methods.select {|m| m.name.to_s == str.to_s }
+    end
+
     private
+    def methods
+      ObjectSpace.each_object(Module).collect do |m|
+        ims = m.instance_methods(false).collect {|s| m.instance_method(s) }
+        cms = m.methods(false).collect {|s| m.method(s) }
+        ims + cms
+      end.flatten
+    end
+
     def mirrors(list)
       list.collect {|each| Mirror.reflect(each) }
     end
