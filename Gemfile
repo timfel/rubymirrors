@@ -1,2 +1,3 @@
-gem 'mspec'
+source :rubygems
 
+gem 'mspec'
