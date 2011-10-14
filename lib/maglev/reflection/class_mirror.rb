@@ -108,8 +108,10 @@ module Maglev
 
       def nesting
         ary = [@subject]
-        while nxt = ary.last.__transient_namespace(1).parent.my_class
-          break if nxt == Object
+        while (ns = ary.last.__transient_namespace(1)) &&
+              (par = ns.parent) &&
+              (nxt = par.my_class)
+          break if nxt.nil? || nxt == Object
           ary << nxt
         end
         ary
