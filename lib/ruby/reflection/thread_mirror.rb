@@ -27,7 +27,7 @@ module Ruby
             method_spec =~ /\`([^']+)'/
             method = $1
             frame = Frame.new method, idx, file, line, self
-            Mirror.reflect frame
+            reflection.reflect frame
           end
         else
           []

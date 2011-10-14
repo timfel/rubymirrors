@@ -9,7 +9,7 @@ module Ruby
             return nil
           end
         end
-        Mirror.reflect @object.const_get(@name)
+        reflection.reflect @object.const_get(@name)
       end
 
       def value=(o)

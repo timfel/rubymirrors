@@ -18,15 +18,15 @@ module Maglev
       end
 
       def receiver
-        Mirror.reflect detailed_report[1]
+        reflection.reflect detailed_report[1]
       end
 
       def self
-        Mirror.reflect detailed_report[2]
+        reflection.reflect detailed_report[2]
       end
 
       def selector
-        Mirror.reflect detailed_report[3].to_s
+        reflection.reflect detailed_report[3].to_s
       end
 
       def arguments
@@ -82,7 +82,7 @@ module Maglev
         names = detailed_report[6][from..to].collect(&:to_s)
         values = detailed_report[7][from..to].collect(&:to_s)
         (values.size - names.size).times {|i| names << ".temp#{i+1}"}
-        values.map! {|v| Mirror.reflect v }
+        values.map! {|v| reflection.reflect v }
         FrameHash[names.zip(values)].tap {|o| o.frame = self }
       end
 

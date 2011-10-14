@@ -11,10 +11,10 @@ module Ruby
         super
         @name = obj.method
         @index = obj.index
-        method_obj = Reflection.implementations_of(@name).detect do |m|
+        method_obj = reflection.implementations_of(@name).detect do |m|
           m.source_location == [obj.file, obj.line]
         end
-        @method = Mirror.reflect method
+        @method = reflection.reflect method
         @thread = obj.thread
       end
     end

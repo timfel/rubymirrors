@@ -14,8 +14,7 @@ module Ruby
       nil.class
     end
 
-    def self.reflect(ignored = nil)
-      self.new
+    def initialize(ignored = nil)
     end
 
     def modules
@@ -32,7 +31,7 @@ module Ruby
 
     def object_by_id(id)
       if obj = ObjectSpace._id2ref(id)
-        Mirror.reflect obj
+        reflect obj
       else
         nil
       end
@@ -68,7 +67,7 @@ module Ruby
     end
 
     def mirrors(list)
-      list.collect {|each| Mirror.reflect(each) }
+      list.collect {|each| reflect each }
     end
   end
 end

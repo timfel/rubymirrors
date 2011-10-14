@@ -2,7 +2,7 @@ module Ruby
   class Reflection
     class ClassVariableMirror < FieldMirror
       def value
-        Mirror.reflect @object.class_variable_get(@name)
+        reflection.reflect @object.class_variable_get(@name)
       end
 
       def value=(o)

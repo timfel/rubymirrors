@@ -34,7 +34,7 @@ describe "FieldMirror" do
   describe "instance variables" do
     before(:each) do
       @o = FieldFixture.new
-      @om = reflection.reflect_object(@o)
+      @om = reflection.reflect(@o)
       @m = @om.variables.first
       @nom = "@ivar"
       @class_side = "instance"
@@ -46,7 +46,7 @@ describe "FieldMirror" do
   describe "class instance variables" do
     before(:each) do
       @o = FieldFixture
-      @om = reflection.reflect_object(@o)
+      @om = reflection.reflect(@o)
       @m = @om.variables.first
       @nom = "@civar"
       @class_side = "instance"
@@ -58,7 +58,7 @@ describe "FieldMirror" do
   describe "class variables" do
     before(:each) do
       @o = FieldFixture
-      @om = reflection.reflect_object(@o)
+      @om = reflection.reflect(@o)
       @m = @om.class_variables.first
       @nom = "@@cvar"
       @class_side = "class"
@@ -70,7 +70,7 @@ describe "FieldMirror" do
   describe "constants" do
     before(:each) do
       @o = FieldFixture
-      @om = reflection.reflect_object(@o)
+      @om = reflection.reflect(@o)
       @m = @om.constants.first
       @name = "CONSTANT"
     end

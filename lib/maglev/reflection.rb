@@ -14,7 +14,7 @@ module Maglev
     def implementations_of(str)
       if sym = Symbol.__existing_symbol(str.to_s)
         class_list = ClassOrganizer.cached_organizer.implementors_of sym
-        class_list.collect {|cls| Mirror.reflect(cls).method sym }
+        class_list.collect {|cls| reflection.reflect(cls).method sym }
       else
         []
       end
@@ -24,7 +24,7 @@ module Maglev
       if sym = Symbol.__existing_symbol(str.to_s)
         meth_list = ClassOrganizer.cached_organizer.senders_of sym
         meth_list.collect do |m|
-          Mirror.reflect(m.__in_class).method m.__name
+          reflection.reflect(m.__in_class).method m.__name
         end
       else
         []
@@ -33,9 +33,9 @@ module Maglev
 
     private
     def mirror_modules_satisfying
-      modules = Mirror.reflect(Object).each_module
+      modules = reflection.reflect(Object).each_module
       modules = modules.select {|m| yield m }
-      modules.collect {|m| Mirror.reflect m }
+      modules.collect {|m| reflection.reflect m }
     end
   end
 end

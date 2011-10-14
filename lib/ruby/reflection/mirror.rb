@@ -5,7 +5,7 @@ module Ruby
 
       private
       def mirrors(list)
-        list.collect {|each| Mirror.reflect each }
+        list.collect {|each| reflection.reflect each }
       end
     end
   end

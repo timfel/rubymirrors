@@ -22,7 +22,7 @@ module Ruby
       end
 
       def singleton_class
-        Mirror.reflect @subject.singleton_class
+        reflection.reflect @subject.singleton_class
       end
 
       def mixins
@@ -30,7 +30,7 @@ module Ruby
       end
 
       def superclass
-        Mirror.reflect @subject.superclass
+        reflection.reflect @subject.superclass
       end
 
       def subclasses
@@ -51,7 +51,7 @@ module Ruby
       end
 
       def method(name)
-        Mirror.reflect @subject.instance_method(name)
+        reflection.reflect @subject.instance_method(name)
       end
     end
   end

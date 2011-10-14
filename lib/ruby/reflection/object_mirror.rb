@@ -9,13 +9,13 @@ module Ruby
       end
 
       def target_class
-        Mirror.reflect @subject.class
+        reflection.reflect @subject.class
       end
 
       private
       def field_mirrors(list, subject = @subject)
         list.collect do |name|
-          Mirror.reflect FieldMirror::Field.new(subject, name)
+          reflection.reflect FieldMirror::Field.new(subject, name)
         end
       end
     end

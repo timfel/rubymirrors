@@ -8,7 +8,7 @@ describe "ObjectMirror" do
 
   before(:each) do
     @o = ObjectFixture.new
-    @m = @r.reflect_object(@o)
+    @m = @r.reflect(@o)
   end
 
   it "can query instance variables" do

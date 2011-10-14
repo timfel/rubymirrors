@@ -9,7 +9,7 @@ describe "StackFrameMirror" do
       t.my_stop("argument_value")
       t.my_return
     end
-    @m = @r.reflect_object(@t)
+    @m = @r.reflect(@t)
     @s = @m.stack
     @f = @s.detect {|frame| frame.name == "my_stop" }
   end

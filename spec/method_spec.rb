@@ -5,10 +5,10 @@ describe "MethodMirror" do
   describe "runtime reflection" do
     describe "structural queries" do
       before(:each) do
-        @r = Reflection.reflect(nil)
+        @r = Reflection.new(nil)
         @f = MethodSpecFixture
         m = MethodSpecFixture.instance_method(:source_location)
-        @m = @r.reflect_object(m)
+        @m = @r.reflect(m)
       end
 
       it "file" do
@@ -45,7 +45,7 @@ describe "MethodMirror" do
         @m.source = @m.source.sub("__FILE__", "__FILE__.to_s")
         @m.source.should =~ /[__FILE__.to_s, __LINE__, __method__.to_s, self.class]/
         @m.defining_class.name.should == MethodSpecFixture.name
-        m = @r.reflect_object MethodSpecFixture.instance_method(:source_location)
+        m = @r.reflect MethodSpecFixture.instance_method(:source_location)
         m.source.should =~ /[__FILE__.to_s, __LINE__, __method__.to_s, self.class]/
       end
     end
@@ -57,7 +57,7 @@ describe "MethodMirror" do
       end
 
       before do
-        @m = @r.reflect_object(method(:method_b))
+        @m = @r.reflect(method(:method_b))
       end
 
       describe "arguments" do
@@ -105,7 +105,7 @@ describe "MethodMirror" do
 
       describe "protection" do
         before do
-          @cm = @r.reflect_object(MethodSpecFixture)
+          @cm = @r.reflect(MethodSpecFixture)
         end
 
         it "is public" do
@@ -156,7 +156,7 @@ describe "MethodMirror" do
 
       it "can delete a method from its home class" do
         c = MethodSpecFixture
-        m = @r.reflect_object c.instance_method(:removeable_method)
+        m = @r.reflect c.instance_method(:removeable_method)
         c.instance_methods(false).map(&:to_s).should include("removeable_method")
         m.delete
         c.instance_methods(false).map(&:to_s).should_not include("removeable_method")

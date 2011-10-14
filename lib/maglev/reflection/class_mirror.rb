@@ -16,7 +16,7 @@ module Maglev
       end
 
       def singleton_class
-        Mirror.reflect @subject.singleton_class
+        reflection.reflect @subject.singleton_class
       end
 
       def compile_method(source, selector = nil)
@@ -103,7 +103,7 @@ module Maglev
       end
 
       def method(name)
-        Mirror.reflect @subject.instance_method(name.to_s)
+        reflection.reflect @subject.instance_method(name.to_s)
       end
 
       def methods
@@ -140,7 +140,7 @@ module Maglev
       def each_module(from=Object, rg=IdentitySet.new, &block)
         unless rg.include?(from)
           rg.add from
-          yield Mirror.reflect(from) if block
+          yield reflection.reflect(from) if block
           if ns = from.__transient_namespace(1)
             ns.values.each {|c| each_module(c, rg, &block) if Module === c }
           end

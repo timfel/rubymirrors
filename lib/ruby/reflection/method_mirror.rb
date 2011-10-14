@@ -17,7 +17,7 @@ module Ruby
       end
 
       def defining_class
-        Mirror.reflect try_send(:owner)
+        reflection.reflect try_send(:owner)
       end
 
       def delete

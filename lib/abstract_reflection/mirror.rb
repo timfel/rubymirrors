@@ -17,11 +17,13 @@ module AbstractReflection
       #   actual object represented - it can itself be just a
       #   representation.  It is really up to the mirror to decide what to
       #   do with it
-      def reflect(obj)
+      # @param [Reflection] the instance of a Reflection this mirror was
+      #   spawned in.
+      def reflect(obj, reflection)
         target_mirror = nil
         @@mirrors.detect {|klass| target_mirror = klass.mirror_class(obj) }
         raise CapabilitiesExceeded if target_mirror.nil?
-        target_mirror.new(obj)
+        target_mirror.new(obj).tap {|m| m.reflection = reflection }
       end
 
       # Decides whether the given class can reflect on [obj]
@@ -72,6 +74,7 @@ module AbstractReflection
     end
 
     extend ClassMethods
+    attr_accessor :reflection
 
     def initialize(obj)
       @subject = obj

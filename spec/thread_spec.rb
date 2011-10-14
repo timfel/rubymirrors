@@ -9,7 +9,7 @@ describe "ThreadMirror" do
       t.stop
       t.return
     end
-    @m = reflection.reflect_object(@t)
+    @m = reflection.reflect(@t)
   end
 
   after(:each) do

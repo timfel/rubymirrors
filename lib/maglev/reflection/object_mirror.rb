@@ -11,7 +11,7 @@ module Maglev
       end
 
       def field_mirror(subject, name)
-        Mirror.reflect FieldMirror::Field.new(subject, name)
+        reflection.reflect FieldMirror::Field.new(subject, name)
       end
     end
   end

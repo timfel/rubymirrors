@@ -13,13 +13,13 @@ module AbstractReflection
     def codebase
       raise NotImplementedError, "#{self} should have implemented #codebase"
     end
+  end
 
-    # Creates a new instance of a Reflection
-    # @param [Object] the codebase to work on, e.g. a file or a VM
-    # @return [Reflection] a new reflection object
-    def reflect(codebase)
-      raise NotImplementedError, "#{self} should have implemented #reflect"
-    end
+  # Creates a new instance of a Reflection
+  # @param [Object] the codebase to work on, e.g. a file or a VM
+  # @return [Reflection] a new reflection object
+  def initialize(object)
+    raise NotImplementedError, "#{self} should have implemented #initialize"
   end
 
   def self.included(base)
@@ -96,8 +96,8 @@ module AbstractReflection
   # observation.
   # @param [Object]
   # @return [Mirror]
-  def reflect_object(o)
-    Mirror.reflect(o)
+  def reflect(o)
+    Mirror.reflect o, self
   end
 end
 

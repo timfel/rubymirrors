@@ -56,7 +56,7 @@ module Maglev
       end
 
       def defining_class
-        Mirror.reflect gsmeth.__in_class
+        reflection.reflect gsmeth.__in_class
       end
 
       def arguments

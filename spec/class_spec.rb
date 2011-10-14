@@ -5,7 +5,7 @@ describe "ClassMirror" do
 
   before do
     @r = reflection
-    @m = reflection.reflect_object(ClassFixture)
+    @m = reflection.reflect(ClassFixture)
   end
 
   describe "queries" do
@@ -75,7 +75,7 @@ describe "ClassMirror" do
     end
 
     it "nesting" do
-      m = @r.reflect_object ClassFixture::ClassFixtureNested
+      m = @r.reflect ClassFixture::ClassFixtureNested
       nesting = m.nesting
       nesting.should == [ClassFixture::ClassFixtureNested, ClassFixture]
     end

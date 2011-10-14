@@ -8,9 +8,9 @@ module Maglev
 
       def stack
         @subject.__stack_depth.times.collect do |idx|
-          method = Mirror.reflect @subject.__method_at(idx + 1)
+          method = reflection.reflect @subject.__method_at(idx + 1)
           frame = StackFrame.new method, idx + 1, self
-          StackFrameMirror.reflect frame
+          StackFrameMirror.reflect frame, reflection
         end
       end
 
