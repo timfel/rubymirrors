@@ -15,6 +15,10 @@ module Maglev
         end
       end
 
+      def singleton_class
+        Mirror.reflect @subject.singleton_class
+      end
+
       def compile_method(source, selector = nil)
         meth_dict = instance_methods(false) + methods(false)
         if selector || (md = /^\s*def\s+(?:self\.)?([^;\( \n]+)/.match(source))
