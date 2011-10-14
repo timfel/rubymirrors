@@ -11,11 +11,23 @@ module Ruby
         super
         @name = obj.method
         @index = obj.index
-        method_obj = reflection.implementations_of(@name).detect do |m|
-          m.source_location == [obj.file, obj.line]
-        end
-        @method = reflection.reflect method
+        @method = find_method_for(obj.file, obj.line)
         @thread = obj.thread
+      end
+
+      private
+      def find_method_for(file, line)
+        # Find all methods that are in the same file and start before
+        # or on the current line of execution
+        possible_methods = reflection.implementations_of(@name).select do |m|
+          f, l = m.send(:source_location)
+          f == file && l.to_i <= line.to_i
+        end
+
+        # Sort by source location. The last method will be the method
+        # that starts closest to the current line of execution. This
+        # should (for most purposes) be the method we're looking for
+        possible_methods.sort_by {|m| m.send(:source_location).last }.last
       end
     end
   end
