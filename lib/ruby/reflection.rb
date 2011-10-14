@@ -14,7 +14,7 @@ module Ruby
       nil.class
     end
 
-    def self.reflect(ignored)
+    def self.reflect(ignored = nil)
       self.new
     end
 
