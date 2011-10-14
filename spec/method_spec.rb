@@ -5,7 +5,7 @@ describe "MethodMirror" do
   describe "runtime reflection" do
     describe "structural queries" do
       before(:each) do
-        @r = Reflection.new(nil)
+        @r = Reflection.reflect(nil)
         @f = MethodSpecFixture
         m = MethodSpecFixture.instance_method(:source_location)
         @m = @r.reflect_object(m)
