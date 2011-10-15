@@ -1,10 +1,10 @@
 require 'abstract_reflection'
 require 'ruby/reflection/mirror'
 require 'ruby/reflection/object_mirror'
+require 'ruby/reflection/class_mirror'
 require 'ruby/reflection/field_mirror'
 require 'ruby/reflection/thread_mirror'
 require 'ruby/reflection/stack_frame_mirror'
-require 'ruby/reflection/class_mirror'
 require 'ruby/reflection/method_mirror'
 
 module Ruby

@@ -46,6 +46,15 @@ module Ruby
         field_mirrors @subject.constants
       end
 
+      def constant(str)
+        path = str.to_s.split("::")
+        c = path[0..-2].inject(@subject) {|klass,str| klass.const_get(str) }
+        field_mirror (c || @subject), path.last
+      rescue NameError => e
+        p e
+        nil
+      end
+
       def nested_classes
         constants.collect(&:value).select {|c| ClassMirror === c }
       end

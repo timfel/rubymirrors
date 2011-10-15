@@ -14,9 +14,11 @@ module Ruby
 
       private
       def field_mirrors(list, subject = @subject)
-        list.collect do |name|
-          reflection.reflect FieldMirror::Field.new(subject, name)
-        end
+        list.collect {|name| field_mirror subject, name }
+      end
+
+      def field_mirror(subject, name)
+        reflection.reflect FieldMirror::Field.new(subject, name)
       end
     end
   end
