@@ -59,6 +59,10 @@ module Ruby
         constants.collect(&:value).select {|c| ClassMirror === c }
       end
 
+      def methods
+        mirrors @subject.instance_methods(false)
+      end
+
       def method(name)
         reflection.reflect @subject.instance_method(name)
       end
