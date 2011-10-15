@@ -55,6 +55,15 @@ module Ruby
         nil
       end
 
+      def nesting
+        ary = []
+        @subject.name.split("::").inject(Object) do |klass,str|
+          ary << klass.const_get(str)
+          ary.last
+        end
+        ary.reverse
+      end
+
       def nested_classes
         constants.collect(&:value).select {|c| ClassMirror === c }
       end
