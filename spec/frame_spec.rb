@@ -9,6 +9,7 @@ describe "StackFrameMirror" do
       t.my_stop("argument_value")
       t.my_return
     end
+    Thread.pass until @t.stop?
     @m = @r.reflect(@t)
     @s = @m.stack
     @f = @s.detect {|frame| frame.name == "my_stop" }
