@@ -67,7 +67,10 @@ module Ruby
       end
 
       def nested_classes
-        constants.collect(&:value).select {|c| ClassMirror === c }
+        nc = @subject.constants.collect do |c|
+          @subject.const_get(c) if @subject.const_defined? c
+        end.compact.select {|c| Module === c }
+        mirrors nc
       end
 
       def methods
