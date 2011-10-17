@@ -46,6 +46,15 @@ module Maglev
         end
       end
 
+      def handle_exception(e = Exception, &block)
+        s = @subject
+        Exception.install_debug_block do |ex|
+          if Thread.current == s && [*e].any? {|ec| ex.is_a? ec }
+            block[ex]
+          end
+        end
+      end
+
       # Maglev specific... for now
       def raw_stack
         stack # Force cache refresh
