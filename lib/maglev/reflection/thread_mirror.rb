@@ -5,6 +5,7 @@ module Maglev
     class ThreadMirror < Ruby::Reflection::ThreadMirror
       reflect! Thread
       StackFrame = Struct.new :method, :index, :thread
+      ExceptionHandlers = {}
 
       def stack
         @subject.__stack_depth.times.collect do |idx|
@@ -47,10 +48,14 @@ module Maglev
       end
 
       def handle_exception(e = Exception, &block)
-        s = @subject
+        ExceptionHandlers[@subject.object_id] ||= []
+        ExceptionHandlers[@subject.object_id] << proc do |ex|
+          block[ex] if [*e].any? {|ec| ex.is_a? ec }
+        end
+
         Exception.install_debug_block do |ex|
-          if Thread.current == s && [*e].any? {|ec| ex.is_a? ec }
-            block[ex]
+          if handlers = ExceptionHandlers[Thread.current.object_id]
+            handlers.each {|h| h[ex] }
           end
         end
       end

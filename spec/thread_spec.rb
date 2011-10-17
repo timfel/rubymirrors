@@ -10,6 +10,8 @@ describe "ThreadMirror" do
       t.return
     end
     @m = reflection.reflect(@t)
+    Thread.pass
+    Thread.pass
   end
 
   after(:each) do
@@ -23,6 +25,7 @@ describe "ThreadMirror" do
 
     it "the thread return value" do
       @m.run
+      Thread.pass; Thread.pass
       @m.return_value.should == ThreadFixture.new.return
     end
 
@@ -34,7 +37,6 @@ describe "ThreadMirror" do
   describe "should manipulate" do
     it "should be able to resume the thread" do
       @m.run
-      Thread.pass
       @m.status.should == "dead"
     end
   end
@@ -80,4 +82,33 @@ describe "ThreadMirror" do
     handled.should == true
   end
 
+  it "should handle the many thread exception blocks" do
+    t1 = Thread.start do
+      t = ThreadFixture.new
+      t.stop
+      t.t_raise
+    end
+    t2 = Thread.start do
+      t = ThreadFixture.new
+      t.stop
+      t.t_raise
+    end
+    m1 = @r.reflect(t1)
+    m2 = @r.reflect(t2)
+    handles = []
+    m1.handle_exception Exception do |e|
+      handles << "m1"
+    end
+    m2.handle_exception Exception do |e|
+      handles << "m2"
+    end
+    m1.run
+    begin t1.join rescue RuntimeError end
+    handles.should include "m1"
+    handles.should_not include "m2"
+    m2.run
+    begin t2.join rescue RuntimeError end
+    handles.should include "m1"
+    handles.should include "m2"
+  end
 end
