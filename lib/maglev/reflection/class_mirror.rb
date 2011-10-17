@@ -19,6 +19,10 @@ module Maglev
         reflection.reflect @subject.singleton_class
       end
 
+      def singleton_class?
+        self.name =~ /^\#<Class:.*>$/
+      end
+
       def compile_method(source, selector = nil)
         meth_dict = instance_methods(false) + methods(false)
         if selector || (md = /^\s*def\s+(?:self\.)?([^;\( \n]+)/.match(source))

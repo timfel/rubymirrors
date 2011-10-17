@@ -25,6 +25,10 @@ module Ruby
         reflection.reflect @subject.singleton_class
       end
 
+      def singleton_class?
+        self.name =~ /^\#<Class:.*>$/
+      end
+
       def mixins
         mirrors @subject.ancestors.reject {|m| m.is_a? Class }
       end
