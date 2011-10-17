@@ -10,6 +10,8 @@ module AbstractReflection
   # representations (bytecode, source, ...), their debugging
   # information and statistical information
   module MethodMirror
+    include Mirror
+
     # @return [ClassMirror] The class this method was originally defined in
     def defining_class
       raise CapabilitiesExceeded

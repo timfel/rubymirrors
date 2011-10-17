@@ -1,5 +1,7 @@
 module AbstractReflection
   module ThreadMirror
+    include Mirror
+
     def stop
       raise CapabilitiesExceeded
     end

@@ -1,5 +1,7 @@
 module AbstractReflection
   module StackFrameMirror
+    include Mirror
+
     def restart
       raise CapabilitiesExceeded
     end

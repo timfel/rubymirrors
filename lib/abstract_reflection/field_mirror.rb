@@ -2,6 +2,8 @@ module AbstractReflection
   # A class to reflect on instance, class, and class instance variables,
   # as well as constants.
   module FieldMirror
+    include Mirror
+
     def value
       raise CapabilitiesExceeded
     end

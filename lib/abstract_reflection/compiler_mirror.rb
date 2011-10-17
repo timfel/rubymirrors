@@ -7,6 +7,8 @@ module AbstractReflection
   # This class should also allow access to information about JIT,
   # caches etc
   module CompilerMirror
+    include Mirror
+
     # Your Kernel#eval, but only compiles and returns
     # the compiled method object.
     #
