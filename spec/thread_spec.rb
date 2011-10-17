@@ -111,4 +111,18 @@ describe "ThreadMirror" do
     handles.should include "m1"
     handles.should include "m2"
   end
+
+  it "should be possible to copy the active thread" do
+    results = []
+    t1 = Thread.start do
+      t = ThreadFixture.new
+      results << @r.reflect(Thread.current).copy_active_thread
+    end
+    t1.join
+    results.size.should == 1
+    results.first.should be_kind_of Thread
+    @r.reflect(results.first).run
+    results.size.should == 2
+    results.last.should be_kind_of Thread
+  end
 end

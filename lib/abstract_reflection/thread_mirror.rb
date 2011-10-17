@@ -2,6 +2,16 @@ module AbstractReflection
   module ThreadMirror
     include Mirror
 
+    module ClassMethods
+      def copy_active_thread
+        raise CapabilitiesExceeded
+      end
+    end
+
+    def copy_active_thread
+      self.class.copy_active_thread
+    end
+
     def stop
       raise CapabilitiesExceeded
     end
