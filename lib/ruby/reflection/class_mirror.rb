@@ -62,6 +62,8 @@ module Ruby
           ary.last
         end
         ary.reverse
+      rescue NameError => e
+        [@subject]
       end
 
       def nested_classes
