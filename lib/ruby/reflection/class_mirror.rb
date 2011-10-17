@@ -71,7 +71,7 @@ module Ruby
       end
 
       def methods
-        mirrors @subject.instance_methods(false)
+        @subject.instance_methods(false).collect(&:to_s)
       end
 
       def method(name)
