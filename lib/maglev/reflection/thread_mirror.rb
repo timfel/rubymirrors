@@ -1,4 +1,6 @@
 require 'maglev/reflection/core_ext/thread'
+require 'maglev/reflection/core_ext/maglev'
+require 'maglev/objectlog'
 
 module Maglev
   class Reflection
@@ -6,6 +8,10 @@ module Maglev
       reflect! Thread
       StackFrame = Struct.new :method, :index, :thread
       ExceptionHandlers = {}
+
+      def self.copy_active_thread
+        save_thread("Continuation #{Thread.current}").continuation
+      end
 
       def stack
         @subject.__stack_depth.times.collect do |idx|
@@ -22,7 +28,7 @@ module Maglev
 
       def run
         if @subject.__is_continuation
-          raise RuntimeError, "cannot run a continuation with #run"
+          Thread.start { @subject.__value(nil) }.run
         end
         super
       end
@@ -71,6 +77,24 @@ module Maglev
 
       def compiler_state
         thread_data.first
+      end
+
+      private
+      ##
+      # Saves an exception to the ObjectLog.
+      # This will abort any pending transaction.
+      def self.save_thread(message)
+        if Maglev::System.needs_commit
+          warn("Saving exception to ObjectLog, discarding transaction")
+        end
+        Maglev.abort_transaction
+        res = DebuggerLogEntry.create_continuation_labeled(message)
+        begin
+          Maglev.commit_transaction
+        rescue Exception => e
+          warn "Error trying to save a continuation to the stone: #{e.message}"
+        end
+        res
       end
     end
   end
