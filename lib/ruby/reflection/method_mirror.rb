@@ -1,3 +1,9 @@
+begin
+  require 'method_source'
+rescue LoadError
+  # Only for MRI
+end
+
 module Ruby
   class Reflection
     class MethodMirror < Mirror
@@ -54,6 +60,21 @@ module Ruby
 
       def private?
         visibility? :private
+      end
+
+      def source
+        try_send(:source) or raise(CapabilitiesExceeded)
+      end
+
+      def step_offsets
+        charcount = [1]
+        source.split(".").collect {|str| charcount << (charcount.last + str.size) }
+        charcount
+      end
+
+      def send_offsets
+        offsets = step_offsets
+        offsets[1..-2]
       end
 
       private
