@@ -15,8 +15,18 @@ module Ruby
         source_location.first
       end
 
+      def file=(name)
+        defining_class.reflectee.class_eval(source, name, line)
+        @subject = defining_class.method(selector)
+      end
+
       def line
         source_location.last
+      end
+
+      def line=(num)
+        defining_class.reflectee.class_eval(source, file, num)
+        @subject = defining_class.method(selector)
       end
 
       def selector
