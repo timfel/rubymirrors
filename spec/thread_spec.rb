@@ -113,13 +113,20 @@ describe "ThreadMirror" do
   end
 
   describe "implement shift/reset" do
-    it "can be used to return early" do
+    it "can be used to return what you want" do
       retval = @r.reflect(Thread.current).reset do
-        @r.reflect(Thread.current).shift {|cc| cc.call "shifted" }
-        "not returned"
+        @r.reflect(Thread.current).shift {|cc| cc.call "shifted" } + " test"
       end
 
-      retval.should == "shifted"
+      retval.should == "shifted test"
+    end
+
+    it "can drop the continuation" do
+      retval = @r.reflect(Thread.current).reset do
+        @r.reflect(Thread.current).shift {|cc| nil }
+      end
+
+      retval.should be_nil
     end
 
     it "can be run and re-run" do
