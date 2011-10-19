@@ -3,6 +3,7 @@ begin
 rescue LoadError
   # Only for MRI
 end
+require 'ruby_parser' unless defined? RubyParser
 
 module Ruby
   class Reflection
@@ -67,14 +68,20 @@ module Ruby
       end
 
       def step_offsets
-        charcount = [1]
-        source.split(".").collect {|str| charcount << (charcount.last + str.size) }
-        charcount
+        [1, *send_offsets.values]
       end
 
       def send_offsets
-        offsets = step_offsets
-        offsets[1..-2]
+        sexp = RubyParser.new.process(source).flatten
+        sends = sexp.each_with_index.map {|e,i| sexp[i-1] if e == :arglist }
+        sends = sends.compact.collect(&:to_s)
+
+        offsets = [0]
+        sends.each do |name|
+          offsets << (source[offsets.last..-1] =~ /#{Regexp.escape(name)}/)
+        end
+        offsets.shift
+        Hash[*sends.zip(offsets).flatten]
       end
 
       private
