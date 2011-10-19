@@ -15,6 +15,13 @@ module Ruby
         @thread = obj.thread
       end
 
+      def step_offset
+        if next_frame = @thread.stack[@index - 1]
+          s = @method.send_offsets[next_frame.name]
+        end
+        s || raise(CapabilitiesExceeded)
+      end
+
       private
       def find_method_for(file, line)
         # Find all methods that are in the same file and start before
