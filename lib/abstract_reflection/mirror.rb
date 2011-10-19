@@ -79,6 +79,7 @@ module AbstractReflection
       # to the class.
       def included(base)
         base.extend(const_get("ClassMethods")) if const_defined?("ClassMethods")
+        base.const_set(:CapabilitiesExceeded, CapabilitiesExceeded)
       end
     end
 
