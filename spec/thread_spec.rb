@@ -10,8 +10,7 @@ describe "ThreadMirror" do
       t.return
     end
     @m = reflection.reflect(@t)
-    Thread.pass
-    Thread.pass
+    sleep 0.1 until @t.stop?
   end
 
   after(:each) do
@@ -25,7 +24,7 @@ describe "ThreadMirror" do
 
     it "the thread return value" do
       @m.run
-      Thread.pass; Thread.pass
+      sleep 0.1 until @t.stop?
       @m.return_value.should == ThreadFixture.new.return
     end
 
@@ -37,6 +36,7 @@ describe "ThreadMirror" do
   describe "should manipulate" do
     it "should be able to resume the thread" do
       @m.run
+      sleep 0.1 while @t.status
       @m.status.should == "dead"
     end
   end
@@ -112,17 +112,24 @@ describe "ThreadMirror" do
     handles.should include "m2"
   end
 
-  it "should be possible to copy the active thread" do
-    results = []
-    t1 = Thread.start do
-      t = ThreadFixture.new
-      results << @r.reflect(Thread.current).copy_active_thread
+  describe "implement shift/reset" do
+    it "can be used to return early" do
+      retval = @r.reflect(Thread.current).reset do
+        @r.reflect(Thread.current).shift {|cc| cc.call "shifted" }
+        "not returned"
+      end
+
+      retval.should == "shifted"
     end
-    t1.join
-    results.size.should == 1
-    results.first.should be_kind_of Thread
-    @r.reflect(results.first).run
-    results.size.should == 2
-    results.last.should be_kind_of Thread
+
+    it "can be run and re-run" do
+      retval = @r.reflect(Thread.current).reset do
+        @r.reflect(Thread.current).shift do |cc|
+          cc.call(cc.call(1))
+        end + 1
+      end
+
+      retval.should == 3
+    end
   end
 end

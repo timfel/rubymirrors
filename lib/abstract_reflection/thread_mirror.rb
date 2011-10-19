@@ -2,16 +2,6 @@ module AbstractReflection
   module ThreadMirror
     include Mirror
 
-    module ClassMethods
-      def copy_active_thread
-        raise CapabilitiesExceeded
-      end
-    end
-
-    def copy_active_thread
-      self.class.copy_active_thread
-    end
-
     def stop
       raise CapabilitiesExceeded
     end
@@ -60,6 +50,14 @@ module AbstractReflection
     # @param [Exception, Array<Exception>] the exception(s) to rescue
     # @param [Block] the exception handler
     def handle_exception(e = Exception, &block)
+      raise CapabilitiesExceeded
+    end
+
+    def reset
+      raise CapabilitiesExceeded
+    end
+
+    def shift
       raise CapabilitiesExceeded
     end
   end
