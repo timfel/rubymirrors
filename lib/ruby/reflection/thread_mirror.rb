@@ -1,7 +1,11 @@
+require 'ruby/reflection/support/shift_reset'
+require 'continuation' unless defined? callcc
+
 module Ruby
   class Reflection
     class ThreadMirror < ObjectMirror
       include AbstractReflection::ThreadMirror
+      include ShiftReset
       reflect! Thread
       Frame = Struct.new :method, :index, :file, :line, :thread
 
