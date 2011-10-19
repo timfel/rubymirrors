@@ -16,6 +16,10 @@ module Ruby
       end
 
       def step_offset
+        @method.step_offsets.index(source_offset)
+      end
+
+      def source_offset
         if next_frame = @thread.stack[@index - 1]
           s = @method.send_offsets[next_frame.name]
         end
