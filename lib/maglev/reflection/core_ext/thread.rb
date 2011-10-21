@@ -52,11 +52,16 @@ class Thread
   #    9    receiver
   #   10    arguments and temps, if any
   primitive '__frame_contents_at', '_frameContentsAt:'
+  class_primitive '__frame_contents_at', '_frameContentsAt:'
   primitive '__run' , 'rubyRun'
   primitive '__wakeup', 'rubyResume'
   primitive '__value', 'value:'
   primitive '_report', '_reportOfSize:'
   primitive '__is_continuation', 'isContinuation'
+  primitive '__is_partial_continuation', 'isPartialContinuation'
+
+  class_primitive '__installPartialContinuation_atLevel_value', 'installPartialContinuation:atLevel:value:'
+  class_primitive '__partialContinuationFromLevel_to', 'partialContinuationFromLevel:to:'
 end
 
 # require 'maglev/objectlog'
