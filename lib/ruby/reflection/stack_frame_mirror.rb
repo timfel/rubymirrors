@@ -26,6 +26,10 @@ module Ruby
         s || raise(CapabilitiesExceeded)
       end
 
+      def selector
+        @name
+      end
+
       private
       def find_method_for(file, line)
         # Find all methods that are in the same file and start before
