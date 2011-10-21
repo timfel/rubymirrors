@@ -123,10 +123,10 @@ describe "ThreadMirror" do
 
     it "can drop the continuation" do
       retval = @r.reflect(Thread.current).reset do
-        @r.reflect(Thread.current).shift {|cc| nil }
+        @r.reflect(Thread.current).shift {|cc| 1 } + 1
       end
 
-      retval.should be_nil
+      retval.should == 1
     end
 
     it "can be run and re-run" do
