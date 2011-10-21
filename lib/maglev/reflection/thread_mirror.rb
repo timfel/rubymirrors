@@ -1,4 +1,5 @@
 require 'maglev/reflection/core_ext/thread'
+require 'maglev/reflection/core_ext/method'
 require 'maglev/reflection/core_ext/maglev'
 require 'maglev/objectlog'
 
@@ -79,22 +80,36 @@ module Maglev
         thread_data.first
       end
 
-      private
-      ##
-      # Saves an exception to the ObjectLog.
-      # This will abort any pending transaction.
-      def self.save_thread(message)
-        if Maglev::System.needs_commit
-          warn("Saving exception to ObjectLog, discarding transaction")
+      def shift(block = Proc.new)
+        cm = self.method(:reset).__st_gsmeth
+        markLevel = nil
+        level = 1
+        idx = nil
+        while aFrame = Thread.__frame_contents_at(level) and idx == nil
+          idx = level if aFrame[0] == cm
+          level += 1
         end
-        Maglev.abort_transaction
-        res = DebuggerLogEntry.create_continuation_labeled(message)
-        begin
-          Maglev.commit_transaction
-        rescue Exception => e
-          warn "Error trying to save a continuation to the stone: #{e.message}"
+        raise(RuntimeError, "no enclosing #reset") if idx.nil?
+        # from my caller to the reset caller
+        partial_cc = Thread.__partialContinuationFromLevel_to(2, idx + 1)
+        res = block.call(reflection.reflect(partial_cc))
+
+        # Now, return execution to the reset: call and replace the
+        # top-of-stack with the result of the block
+
+        # from reset to reset caller
+        cc = Thread.__partialContinuationFromLevel_to(idx - 1, idx + 1)
+        Thread.__installPartialContinuation_atLevel_value(cc, idx + 1, res)
+      end
+
+      def reset(block = Proc.new)
+        (proc { block.call }).call
+      end
+
+      def call(arg)
+        if @subject.__is_partial_continuation
+          Thread.__installPartialContinuation_atLevel_value(@subject, 1, arg)
         end
-        res
       end
     end
   end
