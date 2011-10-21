@@ -1,9 +1,11 @@
 begin
   require 'method_source'
 rescue LoadError
-  # Only for MRI
 end
-require 'ruby_parser' unless defined? RubyParser
+begin
+  require 'ruby_parser' unless defined? RubyParser
+rescue LoadError
+end
 
 module Ruby
   class Reflection
