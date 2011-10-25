@@ -1,4 +1,7 @@
 class GsNMethod
+  primitive_nobridge '__env_id', 'environmentId'
+  primitive_nobridge '__home_method', 'homeMethod'
+  primitive_nobridge '__in_class', 'inClass'
   primitive '__is_method_for_block', 'isMethodForBlock'
   primitive '__source_string_for_block', '_sourceStringForBlock'
   primitive '__source_offsets', '_sourceOffsets'
