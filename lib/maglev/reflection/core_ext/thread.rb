@@ -13,7 +13,8 @@ class Thread
   # Remove all frames above [Fixnum]
   primitive '__trim_stack_to_level', '_trimStackToLevel:'
   # Change temporary at level to value
-  primitive '__frame_at_temp_named_put', '_frameAt:tempNamed:put:'
+  primitive '__frame_at_temp_at_put', '_frameAt:tempAt:put:'
+  primitive '__frame_at_offset_of_temp_named', '_frameAt:offsetOfTempNamed:'
   # => Array
   #    with:
   #  1  gsMethod
@@ -33,7 +34,7 @@ class Thread
   primitive 'convert_to_persistable_state', "convertToPersistableState"
   primitive 'convert_to_runnable_state', 'convertToRunnableState'
   primitive '__ar_stack', 'arStack'
-  primitive '__client_data', '_clientData'
+  primitive '__client_data', 'clientData'
   #  Private.  Returns an Array describing the specified level in the receiver.
   #  aLevel == 1 is top of stack.  If aLevel is less than 1 or greater than
   #  stackDepth, returns nil.
@@ -62,6 +63,12 @@ class Thread
 
   class_primitive '__installPartialContinuation_atLevel_value', 'installPartialContinuation:atLevel:value:'
   class_primitive '__partialContinuationFromLevel_to', 'partialContinuationFromLevel:to:'
+
+  # Re-add behavior which was removed in GS 3.1.0.1
+  def __frame_at_temp_named_put(frameidx, tempname, value)
+    offset = __frame_at_offset_of_temp_named(frameidx, tempname)
+    __frame_at_temp_at_put(frameidx, offset, value)
+  end
 end
 
 # require 'maglev/objectlog'
