@@ -23,7 +23,7 @@ module Ruby
       end
 
       def line
-        source_location.last
+        source_location.last - 1
       end
 
       def line=(num)
@@ -79,6 +79,23 @@ module Ruby
         try_send(:source) or raise(CapabilitiesExceeded)
       rescue => e
         e.message
+      end
+
+      def source=(str)
+        src = try_send(:source)
+        raise "cannot write to source location" unless file and line and File.writable?(file)
+
+        f = File.read(file).lines.to_a
+        srclen = src.lines.to_a.size
+        prefix = f[0...line].join
+        method_src = f[line...line + srclen].join
+        postfix = f[line + srclen..-1].join
+        raise "source differs from runtime" unless method_src.strip == src.strip
+
+        File.open(file, 'w') {|f| f << prefix << str << postfix }
+        defining_class.reflectee.class_eval(str, file, line)
+      rescue Exception => e
+        raise CapabilitiesExceeded, e.message
       end
 
       def step_offsets

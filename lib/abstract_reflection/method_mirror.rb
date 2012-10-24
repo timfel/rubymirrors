@@ -16,7 +16,7 @@ module AbstractReflection
     def defining_class
       raise CapabilitiesExceeded
     end
-    
+
     # @return [String] The source code of this method
     def source
       raise CapabilitiesExceeded
@@ -39,7 +39,7 @@ module AbstractReflection
 
     # Queries the method for it's arguments and returns a list of
     # mirrors that hold name and value information.
-    # 
+    #
     # @return [Array<FieldMirror>]
     def arguments
       raise CapabilitiesExceeded
