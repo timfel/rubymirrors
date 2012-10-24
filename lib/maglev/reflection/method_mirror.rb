@@ -113,7 +113,29 @@ module Maglev
         gsmeth.__in_class.remove_method(selector)
       end
 
+      def breakpoints
+        gsmeth.__all_breakpoints_source_offsets
+      end
+
+      def break(source_offset = 1)
+        step_point = find_step_point_just_before(source_offset)
+        if gsmeth.__is_method_for_block
+          gsmeth.__set_break_at_step_point(step_point)
+        else
+          @subject.__nonbridge_meth.__set_break_at_step_point(step_point)
+        end
+      end
+
+      def clear_break(source_offset)
+        gsmeth.__clear_break_at(find_step_point_just_before(source_offset))
+      end
+
       private
+      def find_step_point_just_before(source_offset)
+        nxt = step_offsets.detect {|o| o > source_offset }
+        [step_offsets.index(nxt) - 1, 1].max
+      end
+
       def wrap_gsmeth(gsmethod)
         label = gsmethod.__name.to_s
         cls = gsmethod.__in_class

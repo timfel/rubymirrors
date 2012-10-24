@@ -15,9 +15,14 @@ class GsNMethod
   primitive '__ip_steps', '_ipSteps'
   primitive '__opcode_info_at', '_opcodeInfoAt:'
   primitive '__in_class', 'inClass'
+  primitive '__all_breakpoints_source_offsets', '_allBreakpointsSourceOffsets'
+  primitive '__set_break_at', 'setBreakAtStepPoint:'
+  primitive '__clear_break_at', 'clearBreakAtStepPoint:'
 end
 
 class UnboundMethod
+  primitive '__nonbridge_meth', '_nonBridgeMeth'
+
   def __st_gsmeth
     @_st_gsmeth
   end
