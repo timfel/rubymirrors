@@ -37,5 +37,4 @@ class Module
   primitive '__inst_var_names', 'instVarNames'
   primitive '__compile_method_category_environment_id', 'compileMethod:category:environmentId:'
   primitive '__compile_method_category_environment_id', 'compileMethod:category:environmentId:'
-  primitive '__subclasses', 'subclasses'
 end

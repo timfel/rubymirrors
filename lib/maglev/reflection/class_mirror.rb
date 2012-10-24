@@ -1,4 +1,5 @@
 require 'maglev/reflection/core_ext/module'
+require 'maglev/reflection/core_ext/class'
 
 module Maglev
   class Reflection
