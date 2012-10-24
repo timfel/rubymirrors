@@ -98,6 +98,8 @@ module Ruby
         end
         offsets.shift
         Hash[*sends.zip(offsets).flatten]
+      rescue Exception
+        return {}
       end
 
       private
