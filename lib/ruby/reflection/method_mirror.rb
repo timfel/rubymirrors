@@ -77,6 +77,8 @@ module Ruby
 
       def source
         try_send(:source) or raise(CapabilitiesExceeded)
+      rescue => e
+        e.message
       end
 
       def step_offsets
