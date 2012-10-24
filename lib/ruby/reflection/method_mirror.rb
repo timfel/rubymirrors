@@ -92,7 +92,9 @@ module Ruby
 
         offsets = [0]
         sends.each do |name|
-          offsets << (source[offsets.last..-1] =~ /#{Regexp.escape(name)}/)
+          next_offset = source[offsets.last..-1] =~ /#{Regexp.escape(name)}/
+          break unless next_offset
+          offsets << next_offset
         end
         offsets.shift
         Hash[*sends.zip(offsets).flatten]
