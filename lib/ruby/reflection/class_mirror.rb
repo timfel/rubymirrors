@@ -72,7 +72,10 @@ module Ruby
 
       def nested_classes
         nc = @subject.constants.collect do |c|
-          @subject.const_get(c) if @subject.const_defined? c
+          # do not trigger autoloads
+          if @subject.const_defined?(c) and not @subject.autoload?(c)
+            @subject.const_get(c)
+          end
         end.compact.select {|c| Module === c }
         mirrors nc
       end
