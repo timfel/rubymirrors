@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.authors       = ["Tim Felgentreff"]
   s.email         = ["timfelgentreff@gmail.com"]
   s.summary       = "Mirror API for Ruby"
-  s.description   = File.read(File.expand_path("../README.md", __FILE__))
+  s.description   = "Provides a number of specs and classes that document a mirror API for Ruby."
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
   s.require_paths = ["lib"]
